@@ -35,7 +35,7 @@ public class AnimalService {
             animal.setSexo(animais.getSexo());
             animal.setDescricao(animais.getDescricao());
             animal.setTipo(animais.getTipo());
-            animal.setProprietarioID(animais.getProprietarioID());
+            animal.setProprietarioId(animais.getProprietarioId());
             animal.setProprietarioTipo(animais.getProprietarioTipo());
             animal.setRaca(animais.getRaca());
             return animalRepository.save(animal);

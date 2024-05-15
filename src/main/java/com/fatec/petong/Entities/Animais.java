@@ -4,11 +4,12 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "animais")
-public class Animais {
+    public class Animais {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer animalId;
+    @Column(name = "animalId")
+    private Integer id;
 
     private String nome;
     private String raca;
@@ -17,13 +18,13 @@ public class Animais {
     private int idade;
     private String tipo;
     private String proprietarioTipo;
-    private int proprietarioID;
+    private int proprietarioId;
 
     public Animais() {
     }
 
-    public Animais(int animalId, String nome, String raca, String sexo, String descricao, int idade, String tipo, String proprietarioTipo, int proprietarioID) {
-        this.animalId = animalId;
+    public Animais(int id, String nome, String raca, String sexo, String descricao, int idade, String tipo, String proprietarioTipo, int proprietarioId) {
+        this.id = id;
         this.nome = nome;
         this.raca = raca;
         this.sexo = sexo;
@@ -31,15 +32,15 @@ public class Animais {
         this.idade = idade;
         this.tipo = tipo;
         this.proprietarioTipo = proprietarioTipo;
-        this.proprietarioID = proprietarioID;
+        this.proprietarioId = proprietarioId;
     }
 
-    public Integer getAnimalId() {
-        return animalId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setAnimalId(Integer id) {
-        this.animalId = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -98,11 +99,11 @@ public class Animais {
         this.proprietarioTipo = proprietarioTipo;
     }
 
-    public int getProprietarioID() {
-        return proprietarioID;
+    public int getProprietarioId() {
+        return proprietarioId;
     }
 
-    public void setProprietarioID(int proprietarioId) {
-        this.proprietarioID = proprietarioId;
+    public void setProprietarioId(int proprietarioId) {
+        this.proprietarioId = proprietarioId;
     }
 }
