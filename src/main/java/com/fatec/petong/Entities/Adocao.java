@@ -44,6 +44,16 @@ public class Adocao {
         this.dataAdocao = dataAdocao;
     }
 
+    public Adocao(Integer id, Usuarios usuario, Animais animal, ONGs ong, Date dataAdocao, EtapaAdocao etapaAdocao, StatusAdocao statusAdocao) {
+        this.id = id;
+        this.usuario = usuario;
+        this.animal = animal;
+        this.ong = ong;
+        this.dataAdocao = dataAdocao;
+        this.etapaAdocao = etapaAdocao;
+        this.statusAdocao = statusAdocao;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -82,5 +92,21 @@ public class Adocao {
 
     public void setDataAdocao(Date dataAdocao) {
         this.dataAdocao = dataAdocao;
+    }
+
+    public EtapaAdocao getEtapaAdocao() {
+        return etapaAdocao;
+    }
+
+    public void setEtapaAdocao(EtapaAdocao etapaAdocao) {
+        this.etapaAdocao = etapaAdocao;
+    }
+
+    public StatusAdocao getStatusAdocao() {
+        return statusAdocao;
+    }
+
+    public void setStatusAdocao(StatusAdocao statusAdocao) {
+        this.statusAdocao = statusAdocao;
     }
 }
