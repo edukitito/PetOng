@@ -20,6 +20,8 @@ public class Animais {
     private String proprietarioTipo;
     private int proprietarioId;
 
+    private byte[] imagem;
+
     public Animais() {
     }
 
@@ -33,6 +35,19 @@ public class Animais {
         this.tipo = tipo;
         this.proprietarioTipo = proprietarioTipo;
         this.proprietarioId = proprietarioId;
+    }
+
+    public Animais(Integer id, String nome, String raca, String sexo, String descricao, int idade, String tipo, String proprietarioTipo, int proprietarioId, byte[] imagem) {
+        this.id = id;
+        this.nome = nome;
+        this.raca = raca;
+        this.sexo = sexo;
+        this.descricao = descricao;
+        this.idade = idade;
+        this.tipo = tipo;
+        this.proprietarioTipo = proprietarioTipo;
+        this.proprietarioId = proprietarioId;
+        this.imagem = imagem;
     }
 
     public Integer getId() {
@@ -105,5 +120,13 @@ public class Animais {
 
     public void setProprietarioId(int proprietarioId) {
         this.proprietarioId = proprietarioId;
+    }
+
+    public byte[] getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(byte[] imagem) {
+        this.imagem = imagem;
     }
 }

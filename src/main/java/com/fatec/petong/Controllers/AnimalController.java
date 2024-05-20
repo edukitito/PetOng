@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,10 +32,39 @@ public class AnimalController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
+    @PostMapping("sem-imagem")
     public ResponseEntity<Animais> createAnimal(@RequestBody Animais animal) {
         Animais createdAnimal = service.create(animal);
         return new ResponseEntity<>(createdAnimal, HttpStatus.CREATED);
+    }
+
+    @PostMapping()
+    public ResponseEntity<Animais> cadastrarAnimal(@RequestParam("nome") String nome,
+                                                   @RequestParam("raca") String raca,
+                                                   @RequestParam("sexo") String sexo,
+                                                   @RequestParam("descricao") String descricao,
+                                                   @RequestParam("idade") int idade,
+                                                   @RequestParam("tipo") String tipo,
+                                                   @RequestParam("proprietarioTipo") String proprietarioTipo,
+                                                   @RequestParam("proprietarioId") int proprietarioId,
+                                                   @RequestParam("imagem") MultipartFile imagem) {
+        try {
+            Animais animal = new Animais();
+            animal.setNome(nome);
+            animal.setRaca(raca);
+            animal.setSexo(sexo);
+            animal.setDescricao(descricao);
+            animal.setIdade(idade);
+            animal.setTipo(tipo);
+            animal.setProprietarioTipo(proprietarioTipo);
+            animal.setProprietarioId(proprietarioId);
+            animal.setImagem(imagem.getBytes());
+
+            Animais novoAnimal = service.create(animal);
+            return new ResponseEntity<>(novoAnimal, HttpStatus.CREATED);
+        } catch (IOException e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/{id}")
