@@ -31,8 +31,8 @@ public class ONGsController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
-    public ResponseEntity<ONGs> createUser(@RequestBody ONGs ong) {
+    @PostMapping("/cadastrar")
+    public ResponseEntity<ONGs> createOng(@RequestBody ONGs ong) {
         ONGs createdONG = ongService.create(ong);
         return new ResponseEntity<>(createdONG, HttpStatus.CREATED);
     }

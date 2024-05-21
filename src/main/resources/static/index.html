@@ -1,55 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="pt-br">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Animais</title>
-    <link rel="stylesheet" href="/style.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="index.css">
+  <title>AdotaPet</title>
+  <link rel="icon" href="./imagens/logo.png" type="image/svg+xml">
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 </head>
+
+
 <body>
-<div class="container">
-    <h1>Cadastro de Animais</h1>
-    <form id="animalForm">
-        <div class="form-group">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" required>
+  <header class="menu">
+    <div class="menu-logotipo">
+      <img href="index.html" src="./imagens/logo.png" width="120" height="120" alt="">
+    <div><h1>Cuidado, amor, resgate e família</h1></div>
+    </div>
+    <div class="menu-botoes">
+      <a href="./adote.html">Adote Já</a>
+      <a href="#sobre">Doações</a>
+      <a href="./login.html">Entrar</a>
+    </div>
+  </header>
+
+  <section class="inicio">
+    
+  </section>
+
+
+  <section class="agende" id="agende">
+    <div class="agende-texto">
+      <h2>Adote seu pet hoje mesmo</h2>
+    </div>
+    <div class="agende-imagens">
+      <img src="./imagens/cachorro.jpeg" width="250" height="250" alt="">
+      <img src="./imagens/cachorro2.jpeg" width="250" height="250" alt="">
+      <img src="./imagens/gato e cachorro.jpeg" width="250" height="250" alt="">
+    </div>
+    <div class="agende-botao">
+      <a href="https://api.whatsapp.com/send/?phone=5517997439658&text&type=phone_number&app_absent=0">Saiba mais</a>
+    </div>
+  </section>
+
+  <section class="sobre" id="sobre">
+    <img src="./imagens/gato e cachorro2.jpeg" width="625" height="700" alt="">
+    <div class="sobre-texto">
+      <h2>Olá somos a  <br> <span>Adota Pet</span></h2>
+      <p>Nossa empresa se dedica a transformar a vida de animais abandonados, encontrando lares amorosos e responsáveis para cada um deles. Acreditamos que todo pet merece uma segunda chance e buscamos para que isso ocorra da melhor forma possível. Adotar um pet não é apenas um ato de amor, mas também uma forma de combater o abandono e a superpopulação de animais. Quando você adota, você salva uma vida e ganha um amigo leal e cheio de gratidão. Juntos, podemos criar um mundo onde cada animal tenha um lar e uma família para chamar de sua. </p>
+    </div>
+  </section>
+
+  <footer class="contato" id="contato">
+    <div class="contato-parte1">
+      <p>Quer saber mais sobre o processo de adoção?</p>
+      <h3>Assine nossa <span>newsletter</span></h3>
+      <form action="">
+        <div class="formulario-footer">
+          <label for="nome"><input type="text" name="nome" id="nome" placeholder="Insira seu nome" required></label>
+          <label for="email"><input type="email" name="email" id="email" placeholder="Insira seu E-mail" required></label>
         </div>
-        <div class="form-group">
-            <label for="raca">Raça:</label>
-            <input type="text" id="raca" name="raca" required>
-        </div>
-        <div class="form-group">
-            <label for="sexo">Sexo:</label>
-            <input type="text" id="sexo" name="sexo" required>
-        </div>
-        <div class="form-group">
-            <label for="descricao">Descrição:</label>
-            <textarea id="descricao" name="descricao" required></textarea>
-        </div>
-        <div class="form-group">
-            <label for="idade">Idade:</label>
-            <input type="number" id="idade" name="idade" required>
-        </div>
-        <div class="form-group">
-            <label for="tipo">Tipo:</label>
-            <input type="text" id="tipo" name="tipo" required>
-        </div>
-        <div class="form-group">
-            <label for="proprietarioTipo">Tipo de Proprietário:</label>
-            <input type="text" id="proprietarioTipo" name="proprietarioTipo" required>
-        </div>
-        <div class="form-group">
-            <label for="proprietarioId">ID do Proprietário:</label>
-            <input type="number" id="proprietarioId" name="proprietarioId" required>
-        </div>
-        <div class="form-group">
-            <label for="imagem">Imagem:</label>
-            <input type="file" id="imagem" name="imagem" accept="image/*" required>
-        </div>
-        <button type="submit">Cadastrar</button>
-    </form>
-    <div id="message"></div>
-</div>
-<script src="script.js"></script>
+        <input class="botao" type="submit" id="submit">
+      </form>
+    </div>
+
+    <div class="contato-parte2">
+      
+      <div class="endereco">
+        
+        <p>Rua 15 de Novembro, 310. Centro. <br> Nova Granada, SP.</p>
+      </div>
+      <div class="logotipo-footer">
+        <img src="./imagens/logo.png" width="150" height="150" alt="">
+      </div>
+    </div>
+
+    <p class="footer-direitos">© Todos os direitos reservados.</p>
+  </footer>
+
+
 </body>
+
 </html>

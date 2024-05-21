@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Animais</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="cadastraranimais.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="menu">
+    <div class="menu-logotipo">
+        <img href="index.html" src="./imagens/logo.png" width="120" height="120" alt="">
+        <h1>Cuidado, amor, resgate e família</h1>
+    </div>
+    <div class="menu-botoes">
+        <a href="./adote.html">Adote Já</a>
+        <a href="#sobre">Doações</a>
+        <a href="./login.html">Entrar</a>
+    </div>
+</header>
+<div class="container">
+    <h1>Cadastro de Animais</h1>
+    <form id="animalForm">
+        <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+        </div>
+        <div class="form-group">
+            <label for="raca">Raça:</label>
+            <input type="text" id="raca" name="raca" required>
+        </div>
+        <div class="form-group">
+            <label for="sexo">Sexo:</label>
+            <input type="text" id="sexo" name="sexo" required>
+        </div>
+        <div class="form-group">
+            <label for="descricao">Descrição:</label>
+            <textarea id="descricao" name="descricao" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="idade">Idade:</label>
+            <input type="number" id="idade" name="idade" required>
+        </div>
+        <div class="form-group">
+            <label for="tipo">Tipo:</label>
+            <input type="text" id="tipo" name="tipo" required>
+        </div>
+        <div class="form-group">
+            <label for="proprietarioTipo">Tipo de Proprietário:</label>
+            <input type="text" id="proprietarioTipo" name="proprietarioTipo" required>
+        </div>
+        <div class="form-group">
+            <label for="proprietarioId">ID do Proprietário:</label>
+            <input type="number" id="proprietarioId" name="proprietarioId" required>
+        </div>
+        <div class="form-group">
+            <label for="imagem">Imagem:</label>
+            <input type="file" id="imagem" name="imagem" accept="image/*" required>
+        </div>
+        <button type="submit">Cadastrar</button>
+    </form>
+    <div id="message"></div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
