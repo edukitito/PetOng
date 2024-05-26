@@ -82,4 +82,10 @@ public class AnimalController {
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/cidade/{cidade}")
+    public ResponseEntity<List<Animais>> getAnimaisByCidade(@PathVariable String cidade) {
+        List<Animais> animais = service.findAnimaisByCidade(cidade);
+        return new ResponseEntity<>(animais, HttpStatus.OK);
+    }
 }

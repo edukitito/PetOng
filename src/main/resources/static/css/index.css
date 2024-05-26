@@ -57,59 +57,33 @@
 
 /* imagem do Início: */
 
-.inicio {
+.inicio{
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   color: #061757;
-  height: 80vh;
-  background-image: url(./imagens/banner.png);
+  height: 100vh; /* Faz a seção ocupar toda a altura da viewport */
+  width: 100%; /* Faz a seção ocupar toda a largura disponível */
+  background-image: url('../img/banner.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  
-
 }
 
-.inicio-texto {
-  font-family: Abel;
-  flex-direction: column;
-  margin-left: 60px;
-  max-width: 70ch;
-  
-}
-
-.inicio-texto h1 {
-  font-size: 100px;
-  font-family: Abel;
-}
-
-.inicio-texto p {
-  font-size: 34px;
-  max-width: 26ch;
-  color: #061757;
-}
-
-.inicio-imagem {
+.inicio img{
   display: flex;
+  flex-wrap: nowrap;
   flex-direction: row;
-  gap: 20px;
-  overflow: hidden;
-  border-radius: 5px;
-}
-
-.inicio-imagem img {
-  max-width: 100%;
-  -moz-transition: all 0.3s;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-  border-radius: 5px;
-}
-
-.inicio-imagem img:hover {
-  -moz-transform: scale(1.1);
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
+  align-items: center;
+  justify-content: center;
+  color: #061757;
+  height: 100%; /* Faz a seção ocupar toda a altura da viewport */
+  width: 100%; /* Faz a seção ocupar toda a largura disponível */
+  background-image: url('../img/banner.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* Página "Agende Comigo" */
