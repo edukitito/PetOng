@@ -50,4 +50,9 @@ import java.util.Optional;
     public void delete(int id) {
         ongsRepository.deleteById(id);
     }
+
+    public Optional<ONGs> findByCnpj(String cnpj) {
+        return ongsRepository.findByCnpj(cnpj);
+    }
+
 }

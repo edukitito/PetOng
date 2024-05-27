@@ -6,10 +6,6 @@
     height: 60vh;
     background-color: #061757;
     border-bottom: solid 5px orange;
-
-    
-    
-    
 }
 
 .form-section {
@@ -19,9 +15,15 @@
     box-shadow: 0 0 10px orange;
     margin: 0 20px;
     max-width: 400px;
-    
-    
-   
+}
+
+.menu-logotipo {
+    align-items: center;
+    display: flex;
+}
+
+.menu-logotipo h1 {
+    padding-left: 20px;
 }
 
 .form-section h2 {

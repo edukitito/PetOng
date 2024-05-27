@@ -6,6 +6,11 @@
   overflow-x: hidden;
 }
 
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 /* Página Inicial: */
 
 .menu {

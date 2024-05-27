@@ -52,4 +52,12 @@ public class ONGsController {
         ongService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/cnpj/{cnpj}")
+    public ResponseEntity<ONGs> getOngByCnpj(@PathVariable String cnpj) {
+        Optional<ONGs> ong = ongService.findByCnpj(cnpj);
+        return ong.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
 }

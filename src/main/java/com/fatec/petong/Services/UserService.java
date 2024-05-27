@@ -49,4 +49,9 @@ import java.util.Optional;
         public void delete(int id) {
             repository.deleteById(id);
         }
+
+    public Optional<Usuarios> findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
+
 }
