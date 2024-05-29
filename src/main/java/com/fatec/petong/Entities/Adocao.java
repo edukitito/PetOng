@@ -12,13 +12,13 @@ public class Adocao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "usuarioId")
     private Usuarios usuario;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "animalId")
     private Animais animal;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "ongId")
     private ONGs ong;
     private Date dataAdocao;

@@ -1,14 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
     const loginButton = document.querySelector('button[type="submit"]');
-    const createONGButton = document.querySelector('.create-account button:nth-child(2)');
-    const createTutorButton = document.querySelector('.create-account button:nth-child(3)');
+    const createONGButton = document.getElementById('criar-ong');
+    const createTutorButton = document.getElementById('criar-tutor');
 
     loginButton.addEventListener('click', function (event) {
         event.preventDefault();
         const emailCPFOrCNPJ = document.getElementById('email-cpf-cnpj').value;
         const password = document.getElementById('senha').value;
 
-        // Logica para determinar a rota baseado no tipo de input: email, CPF ou CNPJ
         let url = '';
         if (emailCPFOrCNPJ.includes('@')) {
             url = '/users/email/' + emailCPFOrCNPJ;
@@ -28,5 +27,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             })
             .catch(() => alert('Usuário não encontrado!'));
+    });
+
+    createONGButton.addEventListener('click', function () {
+        window.location.href = 'cadastrarong.html';
+    });
+
+    createTutorButton.addEventListener('click', function () {
+        window.location.href = 'cadastrartutor.html';
     });
 });
