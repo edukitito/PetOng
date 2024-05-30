@@ -1,7 +1,9 @@
 package com.fatec.petong.Controllers;
 
 import com.fatec.petong.Entities.Animais;
+import com.fatec.petong.Entities.ONGs;
 import com.fatec.petong.Services.AnimalService;
+import com.fatec.petong.Services.ONGService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,10 @@ public class AnimalController {
 
     @Autowired
     AnimalService service;
+
+    @Autowired
+    ONGService serviceOng;
+
 
     @GetMapping
     public ResponseEntity<List<Animais>> getAllAnimais(){
@@ -45,10 +51,11 @@ public class AnimalController {
                                                    @RequestParam("descricao") String descricao,
                                                    @RequestParam("idade") int idade,
                                                    @RequestParam("tipo") String tipo,
-                                                   @RequestParam("proprietarioTipo") String proprietarioTipo,
-                                                   @RequestParam("proprietarioId") int proprietarioId,
-                                                   @RequestParam("imagem") MultipartFile imagem) {
+                                                   @RequestParam("email") String email,
+                                                   @RequestParam("imagem") MultipartFile imagem)
+    {
         try {
+            Optional<ONGs> ongs = serviceOng.findByCnpj(email);
             Animais animal = new Animais();
             animal.setNome(nome);
             animal.setRaca(raca);
@@ -56,8 +63,8 @@ public class AnimalController {
             animal.setDescricao(descricao);
             animal.setIdade(idade);
             animal.setTipo(tipo);
-            animal.setProprietarioTipo(proprietarioTipo);
-            animal.setProprietarioId(proprietarioId);
+            animal.setProprietarioTipo("ong");
+            animal.setProprietarioId(ongs.get().getOngid());
             animal.setImagem(imagem.getBytes());
 
             Animais novoAnimal = service.create(animal);

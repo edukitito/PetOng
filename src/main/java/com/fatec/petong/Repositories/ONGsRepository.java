@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface ONGsRepository extends JpaRepository<ONGs, Integer> {
     Optional<ONGs> findByCnpj(String cnpj);
+
+    Optional<ONGs> findByEmail(String email);
 }

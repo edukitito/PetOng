@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboardOng.css">
     <title>AdotaPet - Dashboard</title>
     <link rel="icon" href="/img/logo.png" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,8 +29,7 @@
         <h2>Dashboard</h2>
         <ul>
             <li><a href="#" id="addAnimalBtn">Adicionar Animal</a></li>
-            <li><a href="#" id="editAnimalBtn">Editar Animal</a></li>
-            <li><a href="#" id="modifyDataBtn">Modificar Dados</a></li>
+                <li><a href="#" id="modifyDataBtn">Modificar Dados</a></li>
             <li><a href="#" id="deleteAccountBtn">Excluir Conta</a></li>
         </ul>
     </div>
@@ -53,12 +52,28 @@
                 <input type="text" id="animalName" name="animalName" required>
             </div>
             <div class="form-group">
-                <label for="animalSpecies">Espécie</label>
-                <input type="text" id="animalSpecies" name="animalSpecies" required>
+                <label for="raca">Raça</label>
+                <input type="text" id="raca" name="raca" required>
             </div>
             <div class="form-group">
                 <label for="animalAge">Idade</label>
                 <input type="number" id="animalAge" name="animalAge" required>
+            </div>
+            <div class="form-group">
+                <label for="sexo">Sexo</label>
+                <input type="text" id="sexo" name="sexo" required>
+            </div>
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <input type="text" id="descricao" name="descricao" required>
+            </div>
+            <div class="form-group">
+                <label for="tipo">Espécie</label>
+                <input type="text" id="tipo" name="tipo" required>
+            </div>
+            <div class="form-group">
+                <label for="imagem">Imagem</label>
+                <input type="file" id="imagem" name="imagem" accept="image/*" required>
             </div>
             <div class="form-actions">
                 <button type="submit" id="saveAnimalBtn">Salvar</button>
@@ -67,7 +82,7 @@
     </div>
 </div>
 
-<script src="js/dashboard.js"></script>
+<script src="js/dashboardOng.js"></script>
 
 </body>
 

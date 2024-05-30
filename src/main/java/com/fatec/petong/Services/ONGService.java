@@ -54,5 +54,8 @@ import java.util.Optional;
     public Optional<ONGs> findByCnpj(String cnpj) {
         return ongsRepository.findByCnpj(cnpj);
     }
+    public Optional<ONGs> findByEmail(String email) {
+        return ongsRepository.findByEmail(email);
+    }
 
 }
