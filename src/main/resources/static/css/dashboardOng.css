@@ -1,0 +1,202 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Abel', sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.menu {
+    width: 100%;
+    background: #333;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.menu-logotipo {
+    display: flex;
+    align-items: center;
+}
+
+.menu-logotipo img {
+    margin-right: 1rem;
+}
+
+.menu-logotipo h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2rem;
+}
+
+.dashboard-container {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 250px;
+    background: #061757;
+    color: white;
+    padding: 1rem;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: auto;
+}
+
+.sidebar h2 {
+    text-align: center;
+    font-family: 'Great Vibes', cursive;
+    margin-bottom: 1rem;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 1rem 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    display: block;
+    transition: background 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background: #f39c12;
+    padding-left: 10px;
+}
+
+.main-content {
+    margin-left: 270px;
+    padding: 2rem;
+    flex: 1;
+}
+
+.animal-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.animal-card {
+    background: white;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: calc(33% - 1rem);
+}
+
+.animal-card h3 {
+    margin-bottom: 0.5rem;
+}
+
+.animal-card p {
+    margin-bottom: 0.5rem;
+}
+
+.animal-card .card-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.animal-card .card-actions button {
+    background: #f39c12;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.animal-card .card-actions button:hover {
+    background: #e67e22;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+}
+
+.closeBtn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.closeBtn:hover,
+.closeBtn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-actions {
+    text-align: center;
+}
+
+.form-actions button {
+    background: #061757;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.form-actions button:hover {
+    background: #f39c12;
+}
