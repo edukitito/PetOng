@@ -36,10 +36,6 @@ body::-webkit-scrollbar {
   font-family: Abel;
   color: #061757;
   padding-left: 20px;
-  
-  
-
-
 }
 .menu-botoes {
   display: flex;

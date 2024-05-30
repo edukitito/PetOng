@@ -32,7 +32,10 @@ public class ONGsController {
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<ONGs> createOng(@RequestBody ONGs ong) {
+    public ResponseEntity<?> createOng(@RequestBody ONGs ong) {
+        if (ong.getCidade() == null || ong.getEstado() == null || ong.getPix() == null) {
+            return new ResponseEntity<>("Informações de cidade, estado ou pix estão faltando", HttpStatus.BAD_REQUEST);
+        }
         ONGs createdONG = ongService.create(ong);
         return new ResponseEntity<>(createdONG, HttpStatus.CREATED);
     }

@@ -1,44 +1,34 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/cadastrarong.css">
-
-
     <title>AdotaPet</title>
     <link rel="icon" href="/img/logo.png" type="image/svg+xml">
-
     <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 </head>
-
 <body>
 <header class="menu">
     <div class="menu-logotipo">
-        <a href="index.html">
-            <img href="index.html" src="img/logo.png" width="120" height="120" alt="">
-        </a>
+        <a href="index.html"><img src="/img/logo.png" width="120" height="120" alt=""></a>
         <h1>Cuidado, amor, resgate e família</h1>
     </div>
     <div class="menu-botoes">
         <a href="./adote.html">Adote Já</a>
-        <a href="#sobre">Doações</a>
+        <a href="./index.html">Doações</a>
         <a href="./login.html">Entrar</a>
     </div>
 </header>
 <div class="container">
     <div class="form-section">
         <h2>Cadastro de Empresa</h2>
-        <form id="cadastro-form">
+        <form id="cadastro-form" class="form-form">
             <div class="form-group">
                 <label for="razao-social">Razão Social</label>
                 <input type="text" id="razao-social" name="razao-social" required>
@@ -56,6 +46,14 @@
                 <input type="text" id="endereco" name="endereco" required>
             </div>
             <div class="form-group">
+                <label for="cidade">Cidade</label>
+                <input type="text" id="cidade" name="cidade" required>
+            </div>
+            <div class="form-group">
+                <label for="estado">Estado</label>
+                <input type="text" id="estado" name="estado" required>
+            </div>
+            <div class="form-group">
                 <label for="telefone">Telefone</label>
                 <input type="text" id="telefone" name="telefone" required>
             </div>
@@ -64,12 +62,16 @@
                 <input type="email" id="email" name="email" required>
             </div>
             <div class="form-group">
+                <label for="pix">PIX</label>
+                <input type="text" id="pix" name="pix" required>
+            </div>
+            <div class="form-group">
                 <label for="senha">Crie uma senha</label>
                 <input type="password" id="senha" name="senha" required minlength="8">
             </div>
             <div class="form-group">
-                <label for="senha">Confirmar senha</label>
-                <input type="password" id="" name="senha" required minlength="8">
+                <label for="confirmar-senha">Confirmar senha</label>
+                <input type="password" id="confirmar-senha" name="confirmar-senha" required minlength="8">
             </div>
             <div class="form-actions">
                 <button type="submit">Cadastrar</button>
@@ -77,9 +79,6 @@
         </form>
     </div>
 </div>
-
 <script src="js/cadastrarong.js"></script>
-
 </body>
-
 </html>

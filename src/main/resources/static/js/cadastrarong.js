@@ -4,12 +4,26 @@ document.getElementById('cadastro-form').addEventListener('submit', function(eve
     const data = {
         nome: document.getElementById('razao-social').value,
         descricao: document.getElementById('nome-fantasia').value,
-        cnpj: document.getElementById('cnpj').value,
-        endereco: document.getElementById('endereco').value,
-        telefone: document.getElementById('telefone').value,
         email: document.getElementById('email').value,
-        senha: document.getElementById('senha').value
+        telefone: document.getElementById('telefone').value,
+        endereco: document.getElementById('endereco').value,
+        cnpj: document.getElementById('cnpj').value,
+        cidade: document.getElementById('cidade').value,
+        estado: document.getElementById('estado').value,
+        senha: document.getElementById('senha').value,
+        pix: document.getElementById('pix').value
     };
+
+    console.log("Dados a serem enviados:", data);
+
+
+    // Verificar se algum campo está vazio
+    for (let key in data) {
+        if (data[key].trim() === "") {
+            alert('Por favor, preencha todos os campos obrigatórios.');
+            return;
+        }
+    }
 
     fetch('http://localhost:8080/ongs/cadastrar', {
         method: 'POST',
