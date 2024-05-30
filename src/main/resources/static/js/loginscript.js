@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(user => {
                 if (user.senha === password) {
                     alert('Login bem-sucedido!');
+                    sessionStorage.setItem('email', emailCPFOrCNPJ);
                 } else {
                     alert('Senha incorreta, tente novamente!');
                 }

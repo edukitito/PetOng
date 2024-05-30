@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <title>AdotaPet - Dashboard</title>
+    <link rel="icon" href="/img/logo.png" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<header class="menu">
+    <div class="menu-logotipo">
+        <a href="index.html">
+            <img href="index.html" src="/img/logo.png" width="120" height="120" alt="">
+        </a>
+        <h1>Cuidado, amor, resgate e família</h1>
+    </div>
+</header>
+
+<div class="dashboard-container">
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a href="#" id="addAnimalBtn">Adicionar Animal</a></li>
+            <li><a href="#" id="editAnimalBtn">Editar Animal</a></li>
+            <li><a href="#" id="modifyDataBtn">Modificar Dados</a></li>
+            <li><a href="#" id="deleteAccountBtn">Excluir Conta</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h2>Meus Animais</h2>
+        <div id="animalList" class="animal-list">
+            <!-- Lista de animais será inserida aqui -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal para adicionar/editar animal -->
+<div id="animalModal" class="modal">
+    <div class="modal-content">
+        <span class="closeBtn">&times;</span>
+        <form id="animalForm">
+            <h2 id="modalTitle">Adicionar Animal</h2>
+            <div class="form-group">
+                <label for="animalName">Nome</label>
+                <input type="text" id="animalName" name="animalName" required>
+            </div>
+            <div class="form-group">
+                <label for="animalSpecies">Espécie</label>
+                <input type="text" id="animalSpecies" name="animalSpecies" required>
+            </div>
+            <div class="form-group">
+                <label for="animalAge">Idade</label>
+                <input type="number" id="animalAge" name="animalAge" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit" id="saveAnimalBtn">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="js/dashboard.js"></script>
+
+</body>
+
+</html>
