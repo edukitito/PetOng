@@ -51,4 +51,8 @@ public class AnimalService {
     public List<Animais> findAnimaisByCidade(String cidade) {
         return animalRepository.findAnimaisByCidade(cidade);
     }
+
+    public List<Animais> findByOng(Integer ongId, String proprietarioTipo) {
+        return animalRepository.findAnimaisByProprietarioIdAndAndProprietarioTipo(ongId, proprietarioTipo);
+    }
 }

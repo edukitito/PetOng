@@ -101,19 +101,34 @@ body {
     border-radius: 5px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: calc(33% - 1rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.animal-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    object-fit: cover;
+    max-height: 200px; /* Ajusta a altura máxima das imagens */
 }
 
 .animal-card h3 {
     margin-bottom: 0.5rem;
+    text-align: center;
 }
 
 .animal-card p {
     margin-bottom: 0.5rem;
+    text-align: center;
 }
 
 .animal-card .card-actions {
     display: flex;
     justify-content: space-between;
+    width: 100%;
 }
 
 .animal-card .card-actions button {
@@ -199,4 +214,28 @@ body {
 
 .form-actions button:hover {
     background: #f39c12;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .animal-card {
+        width: calc(50% - 1rem);
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .animal-card {
+        width: 100%;
+    }
 }

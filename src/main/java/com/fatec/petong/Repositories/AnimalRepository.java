@@ -13,4 +13,6 @@ import java.util.List;
 public interface AnimalRepository extends JpaRepository<Animais, Integer> {
     @Query(value = "EXEC sp_GetAnimaisByCidadeONG @Cidade = :cidade", nativeQuery = true)
     List<Animais> findAnimaisByCidade(@Param("cidade") String cidade);
+
+    List<Animais> findAnimaisByProprietarioIdAndAndProprietarioTipo(Integer ongId, String proprietarioTipo);
 }

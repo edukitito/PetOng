@@ -38,6 +38,23 @@ public class AnimalController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/A/{cnpj}")
+    public ResponseEntity<List<Animais>> getAnimalByCnpj(@PathVariable String cnpj) {
+        Optional<ONGs> ong = serviceOng.findByCnpj(cnpj);
+
+        if (ong.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        List<Animais> animais = service.findByOng(ong.get().getOngid(), "ong");
+
+        if (animais.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return ResponseEntity.ok(animais);
+        }
+    }
+
     @PostMapping("sem-imagem")
     public ResponseEntity<Animais> createAnimal(@RequestBody Animais animal) {
         Animais createdAnimal = service.create(animal);

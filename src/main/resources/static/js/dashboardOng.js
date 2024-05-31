@@ -8,22 +8,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalTitle = document.getElementById('modalTitle');
     let editMode = false;
     let currentAnimalId = null;
-
-    const animals = [
-        { id: 1, name: 'Rex', species: 'Dog', age: 5 },
-        { id: 2, name: 'Mittens', species: 'Cat', age: 3 },
-        // Outros animais
-    ];
+    let animals = [];
 
     function renderAnimals() {
         animalList.innerHTML = '';
         animals.forEach(animal => {
             const animalCard = document.createElement('div');
             animalCard.classList.add('animal-card');
+            // Verificação do valor de animal.imagem
+            let imageSrc = '';
+            if (animal.imagem) {
+                if (animal.imagem.startsWith('data:image')) {
+                    imageSrc = animal.imagem;
+                } else {
+                    imageSrc = `data:image/jpeg;base64,${animal.imagem}`;
+                }
+            } else {
+                // Placeholder para quando não houver imagem
+                imageSrc = 'placeholder-image-url.jpg';
+            }
             animalCard.innerHTML = `
-                <h3>${animal.name}</h3>
-                <p>Espécie: ${animal.species}</p>
-                <p>Idade: ${animal.age}</p>
+               <img src="${imageSrc}" alt="${animal.nome}">
+                <h3>${animal.nome}</h3>
+                <p>Raça: ${animal.raca}</p>
+                <p>Espécie: ${animal.tipo}</p>
+                <p>Sexo: ${animal.sexo}</p>
+                <p>Idade: ${animal.idade} anos</p>
+                <p>Descrição: ${animal.descricao}</p>
                 <div class="card-actions">
                     <button class="edit-btn" data-id="${animal.id}">Editar</button>
                     <button class="delete-btn" data-id="${animal.id}">Excluir</button>
@@ -41,14 +52,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function fetchAnimals() {
+        fetch(`/animais/A/${sessionStorage.getItem('email')}`)
+            .then(response => response.json())
+            .then(data => {
+                animals = data;  // Preenchendo a variável animals com os dados recebidos
+                renderAnimals();
+            })
+            .catch(error => console.error('Erro ao carregar animais:', error));
+    }
+
     function handleEditAnimal(event) {
         editMode = true;
         currentAnimalId = event.target.dataset.id;
         const animal = animals.find(a => a.id == currentAnimalId);
         if (animal) {
-            document.getElementById('animalName').value = animal.name;
-            document.getElementById('animalSpecies').value = animal.species;
-            document.getElementById('animalAge').value = animal.age;
+            document.getElementById('animalName').value = animal.nome;
+            document.getElementById('animalSpecies').value = animal.especie;
+            document.getElementById('animalAge').value = animal.idade;
             modalTitle.textContent = 'Editar Animal';
             animalModal.style.display = 'block';
         }
@@ -56,11 +77,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function handleDeleteAnimal(event) {
         const animalId = event.target.dataset.id;
-        const index = animals.findIndex(a => a.id == animalId);
-        if (index > -1) {
-            animals.splice(index, 1);
-            renderAnimals();
-        }
+        fetch(`/animais/${animalId}`, {
+            method: 'DELETE'
+        })
+            .then(() => {
+                fetchAnimals();
+            })
+            .catch(error => console.error('Erro ao excluir animal:', error));
     }
 
     addAnimalBtn.addEventListener('click', function() {
@@ -103,15 +126,15 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 document.getElementById('message').textContent = 'Animal cadastrado com sucesso!';
                 document.getElementById('animalForm').reset();
+                fetchAnimals();  // Atualiza a lista de animais após a criação de um novo animal
             })
             .catch(error => {
                 document.getElementById('message').textContent = 'Erro ao cadastrar animal.';
                 console.error('Erro:', error);
             });
 
-        renderAnimals();
         animalModal.style.display = 'none';
     });
 
-    renderAnimals();
+    fetchAnimals();
 });
