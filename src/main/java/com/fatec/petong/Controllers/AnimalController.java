@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,14 +93,37 @@ public class AnimalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Animais> updateAnimal(@PathVariable Integer id, @RequestBody Animais animalDetails) {
-        Animais updatedAnimal = service.update(id, animalDetails);
-        if (updatedAnimal != null) {
-            return new ResponseEntity<>(updatedAnimal, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Animais> updateAnimal(
+            @PathVariable Integer id,
+            @RequestParam("nome") String nome,
+            @RequestParam("raca") String raca,
+            @RequestParam("sexo") String sexo,
+            @RequestParam("descricao") String descricao,
+            @RequestParam("idade") int idade,
+            @RequestParam("tipo") String tipo,
+            @RequestParam(value = "imagem", required = false) MultipartFile imagem) {
+
+        Animais animal = new Animais();
+        animal.setNome(nome);
+        animal.setRaca(raca);
+        animal.setSexo(sexo);
+        animal.setDescricao(descricao);
+        animal.setIdade(idade);
+        animal.setTipo(tipo);
+
+        if (imagem != null && !imagem.isEmpty()) {
+            try {
+                byte[] imageBytes = imagem.getBytes();
+                animal.setImagem(imageBytes);
+            } catch (IOException e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
+
+        Animais updatedAnimal = service.update(id, animal);
+        return new ResponseEntity<>(updatedAnimal, HttpStatus.OK);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAnimal(@PathVariable Integer id) {
