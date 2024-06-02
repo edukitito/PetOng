@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    //Elementos do HTML
     const animalList = document.getElementById('animalList');
     const loadingSpinner = document.getElementById('loading-spinner');
     const animalModal = document.getElementById('animalModal');
@@ -11,11 +12,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalTitle = document.getElementById('modalTitle');
     const imagemPreview = document.getElementById('imagemPreview');
     const imagemAtualInput = document.getElementById('imagemAtual');
+    //Variaveis utilizadas
     let editMode = false;
     let currentAnimalId = null;
     let animals = [];
     let animalIdToDelete = null;
 
+    //Gerenciamento do loading
     function showLoadingSpinner() {
         loadingSpinner.style.display = 'block';
         animalList.style.display = 'none';
@@ -26,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         animalList.style.display = 'flex';
     }
 
+    //Rendeniza os animais do modal
     function renderAnimals() {
         animalList.innerHTML = '';
         animals.forEach(animal => {
@@ -64,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
         hideLoadingSpinner();
     }
 
+    //Função que busca os animais no backend
     function fetchAnimals() {
         showLoadingSpinner();
         fetch(`/animais/A/${sessionStorage.getItem('email')}`)
@@ -78,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
+    //Função que monta o modal com as informações do animal para a edição
     function handleEditAnimal(event) {
         editMode = true;
         currentAnimalId = event.target.dataset.id;
@@ -104,11 +110,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    //Função usada para deletar o Animal mostrando o modal de confirmação
     function handleDeleteAnimal(event) {
         animalIdToDelete = event.target.dataset.id;
         deleteConfirmModal.style.display = 'block';
     }
 
+    //Função que envia o delete para o backend
     confirmDeleteBtn.addEventListener('click', function() {
         showLoadingSpinner();
         fetch(`/animais/${animalIdToDelete}`, {
@@ -126,10 +134,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     });
 
+    //Função para tirar o modal de deletar
     cancelDeleteBtn.addEventListener('click', function() {
         deleteConfirmModal.style.display = 'none';
     });
 
+    //Modal para criar um animal
     addAnimalBtn.addEventListener('click', function() {
         editMode = false;
         currentAnimalId = null;
@@ -140,12 +150,14 @@ document.addEventListener('DOMContentLoaded', function() {
         imagemAtualInput.value = '';  // Limpar o campo oculto ao adicionar um novo animal
     });
 
+    //Fechamento de modais
     closeBtn.forEach(btn => {
         btn.addEventListener('click', function() {
             animalModal.style.display = 'none';
             deleteConfirmModal.style.display = 'none';
         });
     });
+
 
     window.addEventListener('click', function(event) {
         if (event.target == animalModal || event.target == deleteConfirmModal) {
@@ -154,6 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    //Envia para o backend o animal passando como adição ou como edição
     animalForm.addEventListener('submit', function(event) {
         event.preventDefault();
         var formData = new FormData();
@@ -179,6 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('imagem', blob, 'imagem.jpg');
         }
 
+        // Expressão lambda para identificar se o edit mode está ativo e fazer uma ação
         const url = editMode ? `/animais/${currentAnimalId}` : '/animais';
         const method = editMode ? 'PUT' : 'POST';
 
@@ -204,5 +218,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     });
 
+    // Faz o carregamento dos animais
     fetchAnimals();
 });
