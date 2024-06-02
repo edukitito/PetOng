@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/dashboardUser.css">
+    <title>AdotaPet - Dashboard Usuário</title>
+    <link rel="icon" href="/img/logo.png" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<header class="menu">
+    <div class="menu-logotipo">
+        <a href="index.html">
+            <img href="index.html" src="/img/logo.png" width="120" height="120" alt="">
+        </a>
+        <h1>Cuidado, amor, resgate e família</h1>
+    </div>
+</header>
+
+<div class="dashboard-container">
+    <div class="sidebar">
+        <h2>Pesquisar Animais</h2>
+        <form id="searchForm">
+            <div class="form-group">
+                <label for="tipo">Tipo</label>
+                <input type="text" id="tipo" name="tipo">
+            </div>
+            <div class="form-group">
+                <label for="cidade">Cidade</label>
+                <input type="text" id="cidade" name="cidade">
+            </div>
+            <div class="form-group">
+                <label for="estado">Estado</label>
+                <input type="text" id="estado" name="estado">
+            </div>
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+    <div class="main-content">
+        <h2>Animais Disponíveis</h2>
+        <div id="loading-spinner" class="loading-spinner">Carregando...</div>
+        <div id="animalList" class="animal-list">
+            <!-- Lista de animais será inserida aqui -->
+        </div>
+    </div>
+</div>
+
+<script src="js/dashboardUser.js"></script>
+</body>
+</html>

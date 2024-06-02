@@ -26,6 +26,15 @@ public class AnimalService {
         return animalRepository.save(animais);
     }
 
+    public List<Animais> searchAnimals(String tipo, String cidade, String estado) {
+        // Implemente a lógica de busca aqui. Você pode usar o JpaRepository ou criar uma consulta personalizada.
+        if (tipo == null && cidade == null && estado == null) {
+            return animalRepository.findAll();
+        } else {
+            return animalRepository.findByTipoAndCidadeAndEstado(tipo, cidade, estado);
+        }
+    }
+
     public Animais update(int id, Animais animais){
         Optional<Animais> animalOptional = animalRepository.findById(id);
         if(animalOptional.isPresent()){

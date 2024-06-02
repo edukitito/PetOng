@@ -1,0 +1,157 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Abel', sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.menu {
+    width: 100%;
+    background: #333;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.menu-logotipo {
+    display: flex;
+    align-items: center;
+}
+
+.menu-logotipo img {
+    margin-right: 1rem;
+}
+
+.menu-logotipo h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2rem;
+}
+
+.dashboard-container {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 250px;
+    background: #061757;
+    color: white;
+    padding: 1rem;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: auto;
+}
+
+.sidebar h2 {
+    text-align: center;
+    font-family: 'Great Vibes', cursive;
+    margin-bottom: 1rem;
+}
+
+.sidebar .form-group {
+    margin-bottom: 1rem;
+}
+
+.sidebar .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.sidebar .form-group input {
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 5px;
+}
+
+.sidebar button {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 5px;
+    background: #f39c12;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.sidebar button:hover {
+    background: #e67e22;
+}
+
+.main-content {
+    margin-left: 270px;
+    padding: 2rem;
+    flex: 1;
+}
+
+.animal-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.animal-card {
+    background: white;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: calc(33% - 1rem);
+    position: relative;
+}
+
+.animal-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.animal-card h3 {
+    margin-top: 0.5rem;
+}
+
+.animal-card p {
+    margin: 0.5rem 0;
+}
+
+.animal-card .card-actions {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 1rem;
+    width: calc(100% - 2rem);
+}
+
+.animal-card .card-actions button {
+    background: #f39c12;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.animal-card .card-actions button:hover {
+    background: #e67e22;
+}
+
+.loading-spinner {
+    text-align: center;
+    font-size: 1.5rem;
+    display: none;
+}

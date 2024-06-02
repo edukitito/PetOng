@@ -23,7 +23,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (user.senha === password) {
                     alert('Login bem-sucedido!');
                     sessionStorage.setItem('email', emailCPFOrCNPJ);
-                    window.location.href = 'dashboardOng.html';
+                    if (url.includes('/users/')) {
+                        window.location.href = 'dashboardUser.html'; // Redirecionar para o dashboard do usuário
+                    } else {
+                        window.location.href = 'dashboardOng.html'; // Redirecionar para o dashboard da ONG
+                    }
                 } else {
                     alert('Senha incorreta, tente novamente!');
                 }

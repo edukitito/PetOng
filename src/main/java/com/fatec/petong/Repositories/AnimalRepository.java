@@ -15,4 +15,6 @@ public interface AnimalRepository extends JpaRepository<Animais, Integer> {
     List<Animais> findAnimaisByCidade(@Param("cidade") String cidade);
 
     List<Animais> findAnimaisByProprietarioIdAndAndProprietarioTipo(Integer ongId, String proprietarioTipo);
+
+    List<Animais> findByTipoAndCidadeAndEstado(String tipo, String cidade, String estado);
 }

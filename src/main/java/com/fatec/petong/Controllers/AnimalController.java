@@ -56,6 +56,16 @@ public class AnimalController {
         }
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Animais>> searchAnimals(
+            @RequestParam(value = "tipo", required = false) String tipo,
+            @RequestParam(value = "cidade", required = false) String cidade,
+            @RequestParam(value = "estado", required = false) String estado) {
+        List<Animais> animais = service.searchAnimals(tipo, cidade, estado);
+        return ResponseEntity.ok(animais);
+    }
+
+
     @PostMapping("sem-imagem")
     public ResponseEntity<Animais> createAnimal(@RequestBody Animais animal) {
         Animais createdAnimal = service.create(animal);
