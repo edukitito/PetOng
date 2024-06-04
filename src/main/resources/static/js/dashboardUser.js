@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const animalList = document.getElementById('animalList');
     const loadingSpinner = document.getElementById('loading-spinner');
     const searchForm = document.getElementById('searchForm');
+    const cidadeInput = document.getElementById('cidade');
+    const estadoInput = document.getElementById('estado');
+    const tipoInput = document.getElementById('tipo');
 
     function showLoadingSpinner() {
         loadingSpinner.style.display = 'block';
@@ -67,8 +70,23 @@ document.addEventListener('DOMContentLoaded', function() {
     searchForm.addEventListener('submit', function(event) {
         event.preventDefault();
         const formData = new FormData(searchForm);
+
+        // Verifique se o campo "Tipo" está vazio e remova-o se estiver
+        if (!tipoInput.value) {
+            formData.delete('tipo'); // Remover o campo "tipo" do FormData se estiver vazio
+        }
+
         const queryParams = new URLSearchParams(formData).toString();
         fetchAnimals(`?${queryParams}`);
+    });
+
+    // Adicione os ouvintes de evento para desativar os campos
+    cidadeInput.addEventListener('input', function() {
+        estadoInput.disabled = !!cidadeInput.value;
+    });
+
+    estadoInput.addEventListener('input', function() {
+        cidadeInput.disabled = !!estadoInput.value;
     });
 
     fetchAnimals();
