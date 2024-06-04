@@ -33,7 +33,7 @@ public class AnimalService {
 
         if (tipo == null && cidade == null && estado == null) {
             return animalRepository.findAll();
-        } else if (tipo != null && cidade == null && estado == null) {
+        } else if (tipo != null && cidade.equals("") && estado.equals("")) {
             return animalRepository.findAnimaisByTipo(tipo);
         } else if (tipo == null && cidade != null && estado == null) {
             return animalRepository.findAnimaisByCidade(cidade);

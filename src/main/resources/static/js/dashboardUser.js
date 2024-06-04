@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
         hideLoadingSpinner();
     }
 
-    function fetchAnimals(queryParams = '') {
+    function fetchAnimals(queryParams = null) {
         showLoadingSpinner();
         fetch(`/animais/search${queryParams}`)
             .then(response => response.json())
@@ -74,6 +74,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Verifique se o campo "Tipo" está vazio e remova-o se estiver
         if (!tipoInput.value) {
             formData.delete('tipo'); // Remover o campo "tipo" do FormData se estiver vazio
+        }
+        if(!cidadeInput.value && !estadoInput){
+            formData.delete('cidade');
+            formData.delete('estado');
         }
 
         const queryParams = new URLSearchParams(formData).toString();
