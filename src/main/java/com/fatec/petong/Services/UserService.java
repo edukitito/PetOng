@@ -46,12 +46,21 @@ import java.util.Optional;
             }
         }
 
-        public void delete(int id) {
-            repository.deleteById(id);
-        }
+    public void delete(int id) {
+        repository.deleteById(id);
+    }
 
     public Optional<Usuarios> findByEmail(String email) {
         return repository.findByEmail(email);
+    }
+
+    public Optional<Usuarios> validateUser(String email, String senha) {
+        Optional<Usuarios> user = repository.findByEmail(email);
+        if (user.isPresent() && user.get().getSenha().equals(senha)) {
+            return user;
+        } else {
+            return Optional.empty();
+        }
     }
 
 }

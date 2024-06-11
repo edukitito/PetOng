@@ -2,6 +2,7 @@ package com.fatec.petong.Controllers;
 
 import com.fatec.petong.Entities.Usuarios;
 import com.fatec.petong.Services.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +58,18 @@ public class UserController {
         Optional<Usuarios> user = userService.findByEmail(email);
         return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestParam String email,
+                                        @RequestParam String senha,
+                                        HttpSession session) {
+        Optional<Usuarios> user = userService.validateUser(email, senha);
+        if (user.isPresent()) {
+            session.setAttribute("user", user.get().getEmail());
+            return ResponseEntity.ok(user.get().getEmail());
+        } else {
+            return new ResponseEntity<>("Invalid email or password", HttpStatus.UNAUTHORIZED);
+        }
     }
 }
