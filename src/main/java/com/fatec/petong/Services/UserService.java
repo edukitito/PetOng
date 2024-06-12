@@ -54,12 +54,14 @@ import java.util.Optional;
         return repository.findByEmail(email);
     }
 
-    public Optional<Usuarios> validateUser(String email, String senha) {
+    public String validateUser(String email, String senha) {
         Optional<Usuarios> user = repository.findByEmail(email);
         if (user.isPresent() && user.get().getSenha().equals(senha)) {
-            return user;
+            return "Aprovado";
+        } else if(user.isPresent() && !user.get().getSenha().equals(senha)){
+            return "Senha Incorreta";
         } else {
-            return Optional.empty();
+            return "Email não encontrado";
         }
     }
 

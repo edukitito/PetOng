@@ -1,8 +1,8 @@
 package com.fatec.petong.Controllers;
 
 import com.fatec.petong.Entities.ONGs;
-import com.fatec.petong.Entities.Usuarios;
 import com.fatec.petong.Services.ONGService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,4 +63,19 @@ public class ONGsController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestParam String email,
+                                        @RequestParam String senha,
+                                        HttpSession session) {
+
+        String validação = ongService.validateUser(email, senha);
+        if (validação.equals("Aprovado")) {
+            session.setAttribute("user", email);
+            return ResponseEntity.ok(email);
+        } else if(validação.equals("Senha Incorreta")) {
+            return new ResponseEntity<>("Senha Inválida", HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>("Usuário Não Encontrado", HttpStatus.UNAUTHORIZED);
+        }
+    }
 }

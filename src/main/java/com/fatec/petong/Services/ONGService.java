@@ -1,6 +1,7 @@
 package com.fatec.petong.Services;
 
 import com.fatec.petong.Entities.ONGs;
+import com.fatec.petong.Entities.Usuarios;
 import com.fatec.petong.Repositories.ONGsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,8 +55,16 @@ import java.util.Optional;
     public Optional<ONGs> findByCnpj(String cnpj) {
         return ongsRepository.findByCnpj(cnpj);
     }
-    public Optional<ONGs> findByEmail(String email) {
-        return ongsRepository.findByEmail(email);
+
+    public String validateUser(String cnpj, String senha) {
+        Optional<ONGs> ong = ongsRepository.findByCnpj(cnpj);
+        if (ong.isPresent() && ong.get().getSenha().equals(senha)) {
+            return "Aprovado";
+        } else if(ong.isPresent() && !ong.get().getSenha().equals(senha)){
+            return "Senha Incorreta";
+        } else {
+            return "Email não encontrado";
+        }
     }
 
 }

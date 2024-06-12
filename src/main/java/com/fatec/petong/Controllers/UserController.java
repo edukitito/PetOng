@@ -64,12 +64,15 @@ public class UserController {
     public ResponseEntity<String> login(@RequestParam String email,
                                         @RequestParam String senha,
                                         HttpSession session) {
-        Optional<Usuarios> user = userService.validateUser(email, senha);
-        if (user.isPresent()) {
-            session.setAttribute("user", user.get().getEmail());
-            return ResponseEntity.ok(user.get().getEmail());
+
+        String validação = userService.validateUser(email, senha);
+        if (validação.equals("Aprovado")) {
+            session.setAttribute("user", email);
+            return ResponseEntity.ok(email);
+        } else if(validação.equals("Senha Incorreta")) {
+            return new ResponseEntity<>("Senha Inválida", HttpStatus.UNAUTHORIZED);
         } else {
-            return new ResponseEntity<>("Invalid email or password", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("Usuário Não Encontrado", HttpStatus.UNAUTHORIZED);
         }
     }
 }
