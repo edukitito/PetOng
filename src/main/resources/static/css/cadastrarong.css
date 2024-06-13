@@ -128,3 +128,8 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: orange;
 }
+
+.error {
+    color: red;
+    display: none;
+}

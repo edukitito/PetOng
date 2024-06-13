@@ -32,46 +32,57 @@
             <div class="form-group">
                 <label for="razao-social">Razão Social</label>
                 <input type="text" id="razao-social" name="razao-social" required>
+                <span class="error" id="razao-social-error">Campo obrigatório.</span>
             </div>
             <div class="form-group">
                 <label for="nome-fantasia">Nome Fantasia</label>
                 <input type="text" id="nome-fantasia" name="nome-fantasia" required>
+                <span class="error" id="nome-fantasia-error">Campo obrigatório.</span>
             </div>
             <div class="form-group">
                 <label for="cnpj">CNPJ</label>
-                <input type="text" id="cnpj" name="cnpj" required minlength="11">
+                <input type="text" id="cnpj" name="cnpj" required minlength="18">
+                <span class="error" id="cnpj-error">Digite um CNPJ válido no formato 00.000.000/0000-00.</span>
             </div>
             <div class="form-group">
                 <label for="endereco">Endereço</label>
                 <input type="text" id="endereco" name="endereco" required>
+                <span class="error" id="endereco-error">Campo obrigatório.</span>
             </div>
             <div class="form-group">
                 <label for="cidade">Cidade</label>
                 <input type="text" id="cidade" name="cidade" required>
+                <span class="error" id="cidade-error">Campo obrigatório.</span>
             </div>
             <div class="form-group">
                 <label for="estado">Estado</label>
-                <input type="text" id="estado" name="estado" required>
+                <input type="text" id="estado" name="estado" required="2">
+                <span class="error" id="estado_error">Digite como o exemplo: SP</span>
             </div>
             <div class="form-group">
                 <label for="telefone">Telefone</label>
                 <input type="text" id="telefone" name="telefone" required>
+                <span class="error" id="telefone-error">Digite um telefone válido.</span>
             </div>
             <div class="form-group">
                 <label for="email">E-mail</label>
                 <input type="email" id="email" name="email" required>
+                <span class="error" id="email-error">Digite um e-mail válido.</span>
             </div>
             <div class="form-group">
                 <label for="pix">PIX</label>
-                <input type="text" id="pix" name="pix" required>
+                <input type="text" id="pix" name="pix" required minlength="8">
+                <span class="error" id="pix-error">Campo obrigatório.</span>
             </div>
             <div class="form-group">
                 <label for="senha">Crie uma senha</label>
                 <input type="password" id="senha" name="senha" required minlength="8">
+                <span class="error" id="senha_error">Minimo 8 Caracteres, Letra maiúscula, Minúscula, Caractere Especial, Número</span>
             </div>
             <div class="form-group">
                 <label for="confirmar-senha">Confirmar senha</label>
                 <input type="password" id="confirmar-senha" name="confirmar-senha" required minlength="8">
+                <span class="error" id="confirmar_senha_error">As senhas não coincidem.</span>
             </div>
             <div class="form-actions">
                 <button type="submit">Cadastrar</button>
