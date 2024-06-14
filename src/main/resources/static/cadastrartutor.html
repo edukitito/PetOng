@@ -36,48 +36,58 @@
         <form id="cadastro-form" class="form-form">
             <div class="form-group">
                 <label for="nome">Nome</label>
-                <input type="text" id="nome" name="nome" required>
+                <input type="text" id="nome" name="nome" required minlength="5">
+                <span id="nome_error" class="error">Nome deve ter pelo menos 5 caracteres</span>
             </div>
             <div class="form-group">
                 <label for="nickname">Nickname</label>
-                <input type="text" id="nickname" name="nickname" required>
+                <input type="text" id="nickname" name="nickname" required minlength="5">
+                <span id="nickname_error" class="error">Nickname deve ter pelo menos 5 caracteres</span>
             </div>
             <div class="form-group">
                 <label for="senha">Crie uma senha</label>
                 <input type="password" id="senha" name="senha" required minlength="8">
+                <span id="senha_error" class="error">Minimo 8 Caracteres, Letra maiúscula, Minúscula, Caractere Especial, Número</span>
             </div>
             <div class="form-group">
-                <label for="senha">Confirmar senha</label>
+                <label for="senhaconfirmada">Confirmar senha</label>
                 <input type="password" id="senhaconfirmada" name="senhaconfirmada" required minlength="8">
+                <span id="senhaconfirmada_error" class="error">Confirmação de senha deve ter pelo menos 8 caracteres</span>
             </div>
             <div class="form-group">
                 <label for="email">E-mail</label>
                 <input type="email" id="email" name="email" required>
+                <span id="email_error" class="error">Digite um email válido</span>
             </div>
             <div class="form-group">
                 <label for="telefone">Telefone</label>
                 <input type="text" id="telefone" name="telefone" required>
+                <span id="telefone_error" class="error">Digite um telefone válido</span>
             </div>
             <div class="form-group">
                 <label for="cpf">CPF</label>
                 <input type="text" id="cpf" name="cpf" required>
+                <span id="cpf_error" class="error">Digite um CPF válido</span>
             </div>
             <div class="form-group">
                 <label for="endereco">Endereço</label>
                 <input type="text" id="endereco" name="endereco" required>
+                <span id="endereco_error" class="error">Endereço é obrigatório</span>
             </div>
             <div class="form-group">
                 <label for="cidade">Cidade</label>
                 <input type="text" id="cidade" name="cidade" required>
+                <span id="cidade_error" class="error">Cidade é obrigatória</span>
             </div>
             <div class="form-group">
                 <label for="estado">Estado</label>
                 <input type="text" id="estado" name="estado" required>
+                <span id="estado_error" class="error">Estado em Maiúsculo é obrigatório</span>
+            </div>
+            <div class="form-actions">
+                <button id="submit-btn" type="submit">Cadastrar</button>
             </div>
         </form>
-        <div class="form-actions">
-            <button id="submit-btn" type="button">Cadastrar</button>
-        </div>
     </div>
 </div>
 

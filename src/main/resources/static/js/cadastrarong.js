@@ -27,10 +27,10 @@ function validateInput(inputId, errorId, regexPattern) {
 }
 
 function validateAllFields() {
-    //validateInput('cnpj', 'cnpj-error', /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/);
-    //validateInput('telefone', 'telefone-error', /^\(\d{2}\) \d{9}$/);
-    //validateInput('email', 'email-error', /^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-    //validateInput('estado', 'estado_error', /[A-Z]{2}$/);
+    validateInput('cnpj', 'cnpj-error', /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/);
+    validateInput('telefone', 'telefone-error', /^\(\d{2}\) \d{9}$/);
+    validateInput('email', 'email-error', /^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+    validateInput('estado', 'estado_error', /[A-Z]{2}$/);
     validateInput('senha', 'senha_error', /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/);
 
     const senha = document.getElementById('senha').value;
@@ -76,6 +76,7 @@ document.getElementById('cadastro-form').addEventListener('submit', function(eve
             .then(data => {
                 console.log('Success:', data);
                 alert('Cadastro realizado com sucesso!');
+                window.location.href = 'login.html';
             })
             .catch((error) => {
                 console.error('Error:', error);
