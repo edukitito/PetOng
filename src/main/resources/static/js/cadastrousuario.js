@@ -1,15 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('cadastro-form');
-    const submitBtn = document.getElementById('submit-btn');
 
-    submitBtn.addEventListener('click', function () {
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
         const senha = document.getElementById('senha').value;
         const senhaConfirmada = document.getElementById('senhaconfirmada').value;
 
-        // Checando se as senhas são iguais
         if (senha !== senhaConfirmada) {
             alert('As senhas não coincidem. Por favor, tente novamente.');
-            return; // Interrompe o envio do formulário
+            return;
         }
 
         const formData = {
@@ -24,68 +24,197 @@ document.addEventListener('DOMContentLoaded', function () {
             estado: document.getElementById('estado').value
         };
 
-        fetch('/users', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error('Erro ao criar usuário');
+        if (validateForm(formData)) {
+            fetch('/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
             })
-            .then(data => {
-                alert('Usuário cadastrado com sucesso!');
-                form.reset();
-            })
-            .catch(error => {
-                alert(error.message);
-            });
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Erro ao criar usuário');
+                })
+                .then(data => {
+                    alert('Usuário cadastrado com sucesso!');
+                    window.location.href = 'login.html';
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+        } else {
+            alert('Por favor, corrija os erros no formulário.');
+        }
     });
-});
 
-function applyMasks(){
-    VMasker(document.getElementById("cpf")).maskPattern("999.999.999-99")
-    VMasker(document.getElementById("estado")).maskPattern("AA")
-    VMasker(document.getElementById("telefone")).maskPattern("(99) 999999999")
-}
+    const inputs = ['nome', 'nickname', 'senha', 'senhaconfirmada', 'email', 'telefone', 'cpf', 'endereco', 'cidade', 'estado'];
+    inputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        input.addEventListener('blur', () => validateSingleInput(inputId));
+        input.addEventListener('input', () => validateSingleInput(inputId));
+    });
 
-function validateInput(inputId, errorId, regexPattern) {
-    const inputField = document.getElementById(inputId);
-    const errorSpan = document.getElementById(errorId);
-    const inputValue = inputField.value;
+    function validateSingleInput(inputId) {
+        const errorId = inputId + '_error';
+        const inputField = document.getElementById(inputId);
+        const errorSpan = document.getElementById(errorId);
+        const inputValue = inputField.value;
 
-    const isValid = regexPattern.test(inputValue);
+        let isValid = true;
+        let regexPattern;
 
-    if (!isValid) {
+        switch (inputId) {
+            case 'nome':
+            case 'nickname':
+                isValid = inputValue.length >= 5;
+                break;
+            case 'senha':
+                regexPattern = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/;
+                isValid = regexPattern.test(inputValue) && inputValue.length >= 8;
+                break;
+            case 'senhaconfirmada':
+                isValid = inputValue === document.getElementById('senha').value;
+                break;
+            case 'email':
+                regexPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                isValid = regexPattern.test(inputValue);
+                break;
+            case 'telefone':
+                regexPattern = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+                isValid = regexPattern.test(inputValue);
+                break;
+            case 'cpf':
+                regexPattern = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+                isValid = regexPattern.test(inputValue);
+                break;
+            case 'estado':
+                regexPattern = /^[A-Z]{2}$/;
+                isValid = regexPattern.test(inputValue);
+                break;
+            default:
+                isValid = inputValue.length > 0;
+        }
+
+        if (!isValid) {
+            displayError(inputField, errorSpan);
+        } else {
+            hideError(inputField, errorSpan);
+        }
+    }
+
+    function validateForm(formData) {
+        let isValid = true;
+
+        // Validar nome
+        if (formData.nome.length < 5) {
+            displayError(document.getElementById('nome'), document.getElementById('nome_error'));
+            isValid = false;
+        } else {
+            hideError(document.getElementById('nome'), document.getElementById('nome_error'));
+        }
+
+        // Validar nickname
+        if (formData.nickname.length < 5) {
+            displayError(document.getElementById('nickname'), document.getElementById('nickname_error'));
+            isValid = false;
+        } else {
+            hideError(document.getElementById('nickname'), document.getElementById('nickname_error'));
+        }
+
+        // Validar senha
+        if (formData.senha.length < 8 || !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/.test(formData.senha)) {
+            displayError(document.getElementById('senha'), document.getElementById('senha_error'));
+            isValid = false;
+        } else {
+            hideError(document.getElementById('senha'), document.getElementById('senha_error'));
+        }
+
+        // Validar confirmação de senha
+        if (document.getElementById('senhaconfirmada').value !== formData.senha) {
+            displayError(document.getElementById('senhaconfirmada'), document.getElementById('senhaconfirmada_error'));
+            isValid = false;
+        } else {
+            hideError(document.getElementById('senhaconfirmada'), document.getElementById('senhaconfirmada_error'));
+        }
+
+        // Validar email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            displayError(document.getElementById('email'), document.getElementById('email_error'));
+            isValid = false;
+        } else {
+            hideError(document.getElementById('email'), document.getElementById('email_error'));
+        }
+
+        // Validar telefone
+        if (!formData.telefone.match(/^\(\d{2}\) \d{4,5}-\d{4}$/)) {
+            displayError(document.getElementById('telefone'), document.getElementById('telefone_error'));
+            isValid = false;
+        } else {
+            hideError(document.getElementById('telefone'), document.getElementById('telefone_error'));
+        }
+
+        // Validar CPF
+        if (!formData.cpf.match(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)) {
+            displayError(document.getElementById('cpf'), document.getElementById('cpf_error'));
+            isValid = false;
+        } else {
+            hideError(document.getElementById('cpf'), document.getElementById('cpf_error'));
+        }
+
+        // Validar endereço
+        if (formData.endereco.length < 1) {
+            displayError(document.getElementById('endereco'), document.getElementById('endereco_error'));
+            isValid = false;
+        } else {
+            hideError(document.getElementById('endereco'), document.getElementById('endereco_error'));
+        }
+
+        // Validar cidade
+        if (formData.cidade.length < 1) {
+            displayError(document.getElementById('cidade'), document.getElementById('cidade_error'));
+            isValid = false;
+        } else {
+            hideError(document.getElementById('cidade'), document.getElementById('cidade_error'));
+        }
+
+        // Validar estado
+        if (!/^[A-Z]{2}$/.test(formData.estado)) {
+            displayError(document.getElementById('estado'), document.getElementById('estado_error'));
+            isValid = false;
+        } else {
+            hideError(document.getElementById('estado'), document.getElementById('estado_error'));
+        }
+
+        return isValid;
+    }
+
+    function displayError(inputField, errorSpan) {
+        inputField.style.borderColor = 'red';
         errorSpan.style.display = 'block';
-    } else {
+    }
+
+    function hideError(inputField, errorSpan) {
+        inputField.style.borderColor = 'green';
         errorSpan.style.display = 'none';
     }
-}
 
-document.getElementById("email").addEventListener('blur', function () {
-    validateInput('email', 'email_error', /^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-})
+    function applyMasks() {
+        VMasker(document.getElementById("cpf")).maskPattern("999.999.999-99");
+        VMasker(document.getElementById("estado")).maskPattern("AA");
+        VMasker(document.getElementById("telefone")).maskPattern("(99) 99999-9999");
+    }
 
-document.getElementById('senha').addEventListener('blur', function () {
-    validateInput('senha', 'senha_error', /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/);
+    loadScript("https://unpkg.com/vanilla-masker/build/vanilla-masker.min.js", applyMasks);
+
+    function loadScript(url, callback) {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = url;
+        script.onload = callback;
+        document.head.appendChild(script);
+    }
 });
-
-document.getElementById('telefone').addEventListener('blur', function () {
-    validateInput('telefone', 'telefone_error', /^\(\d{2}\) \d{9}$/);
-});
-
-function loadScript(url, callback) {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = url;
-    script.onload = callback;
-    document.head.appendChild(script);
-}
-
-
-loadScript("https://unpkg.com/vanilla-masker/build/vanilla-masker.min.js", applyMasks);
