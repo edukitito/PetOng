@@ -29,7 +29,6 @@
         <h2>Dashboard</h2>
         <ul>
             <li><a href="#" id="addAnimalBtn">Adicionar Animal</a></li>
-            <li><a href="#" id="editAnimalBtn">Editar Animal</a></li>
             <li><a href="#" id="modifyDataBtn">Modificar Dados</a></li>
             <li><a href="#" id="deleteAccountBtn">Excluir Conta</a></li>
         </ul>
@@ -95,6 +94,58 @@
             <button id="confirmDeleteBtn">Excluir</button>
             <button id="cancelDeleteBtn">Cancelar</button>
         </div>
+    </div>
+</div>
+
+<div id="modifyDataModal" class="modal">
+    <div class="modal-content">
+        <span class="closeBtn">&times;</span>
+        <form id="modifyDataForm">
+            <h2>Modificar Dados da ONG</h2>
+            <div class="form-group">
+                <label for="ongNome">Nome</label>
+                <input type="text" id="ongNome" name="ongNome" required>
+            </div>
+            <div class="form-group">
+                <label for="ongDescricao">Descrição</label>
+                <input type="text" id="ongDescricao" name="ongDescricao" required>
+            </div>
+            <div class="form-group">
+                <label for="ongEmail">Email</label>
+                <input type="email" id="ongEmail" name="ongEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="ongTelefone">Telefone</label>
+                <input type="text" id="ongTelefone" name="ongTelefone" required>
+            </div>
+            <div class="form-group">
+                <label for="ongEndereco">Endereço</label>
+                <input type="text" id="ongEndereco" name="ongEndereco" required>
+            </div>
+            <div class="form-group">
+                <label for="ongCidade">Cidade</label>
+                <input type="text" id="ongCidade" name="ongCidade" required>
+            </div>
+            <div class="form-group">
+                <label for="ongEstado">Estado</label>
+                <input type="text" id="ongEstado" name="ongEstado" required>
+            </div>
+            <div class="form-group">
+                <label for="ongCnpj">CNPJ</label>
+                <input type="text" id="ongCnpj" name="ongCnpj" required>
+            </div>
+            <div class="form-group">
+                <label for="ongPix">PIX</label>
+                <input type="text" id="ongPix" name="ongPix" required>
+            </div>
+            <div class="form-group">
+                <label for="ongSenha">Senha</label>
+                <input type="password" id="ongSenha" name="ongSenha" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit">Salvar</button>
+            </div>
+        </form>
     </div>
 </div>
 

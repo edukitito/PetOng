@@ -32,8 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('Login bem-sucedido!');
                 sessionStorage.setItem('email', email);
                 // Define qual dashboard abrir baseando-se no conteúdo de email (supondo que CNPJ só contém dígitos)
-                const regexCNPJ = /^\d+$/;
-                window.location.href = regexCNPJ.test(email) ? 'dashboardOng.html' : 'dashboardUser.html';
+                window.location.href = email.includes('@') ? 'dashboardUser.html' : 'dashboardOng.html';
             })
             .catch(error => {
                 // Exibe um alerta com o erro

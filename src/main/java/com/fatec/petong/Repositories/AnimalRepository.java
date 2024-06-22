@@ -11,17 +11,17 @@ import java.util.List;
 @Repository
 public interface AnimalRepository extends JpaRepository<Animais, Integer> {
 
-    @Query(value = "EXEC sp_GetAnimaisByCidadeONG :Cidade", nativeQuery = true)
-    List<Animais> findAnimaisByCidade(@Param("Cidade") String cidade);
+    @Query("SELECT a FROM Animais a inner join ONGs o on a.proprietarioId=o.ongid where o.cidade = :cidade")
+    List<Animais> findAnimaisByCidade(@Param("cidade") String cidade);
 
-    @Query(value = "EXEC sp_GetAnimaisByEstadoONG :Estado", nativeQuery = true)
-    List<Animais> findAnimaisByEstado(@Param("Estado") String estado);
+    @Query("SELECT a FROM Animais a inner join ONGs o on a.proprietarioId=o.ongid where o.estado = :estado")
+    List<Animais> findAnimaisByEstado(@Param("estado") String estado);
 
-    @Query(value = "EXEC sp_GetAnimaisByEstadoTipoONG :Estado, :Tipo", nativeQuery = true)
-    List<Animais> findAnimaisByEstadoTipo(@Param("Estado") String estado, @Param("Tipo") String tipo);
+    @Query("SELECT a FROM Animais a inner join ONGs o on a.proprietarioId=o.ongid where o.estado = :estado and a.tipo =:tipo")
+    List<Animais> findAnimaisByEstadoTipo(@Param("estado") String estado, @Param("tipo") String tipo);
 
-    @Query(value = "EXEC sp_GetAnimaisByCidadeTipoONG :Cidade, :Tipo", nativeQuery = true)
-    List<Animais> findAnimaisByCidadeTipo(@Param("Cidade") String cidade, @Param("Tipo") String tipo);
+    @Query("SELECT a FROM Animais a inner join ONGs o on a.proprietarioId=o.ongid where o.cidade = :cidade and a.tipo =:tipo")
+    List<Animais> findAnimaisByCidadeTipo(@Param("cidade") String cidade, @Param("tipo") String tipo);
 
     @Query("SELECT a FROM Animais a WHERE a.tipo = :tipo")
     List<Animais> findAnimaisByTipo(@Param("tipo") String tipo);

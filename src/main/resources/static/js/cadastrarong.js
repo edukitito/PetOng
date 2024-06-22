@@ -49,6 +49,8 @@ document.getElementById('cadastro-form').addEventListener('submit', function(eve
     validateAllFields();
     const form = event.target;
     const isValid = form.checkValidity();
+    let cnpj = document.getElementById('cnpj').value;
+    cnpj = limparCNPJ(cnpj);
     if (isValid) {
         const data = {
             nome: document.getElementById('razao-social').value,
@@ -56,7 +58,7 @@ document.getElementById('cadastro-form').addEventListener('submit', function(eve
             email: document.getElementById('email').value,
             telefone: document.getElementById('telefone').value,
             endereco: document.getElementById('endereco').value,
-            cnpj: document.getElementById('cnpj').value,
+            cnpj: cnpj,
             cidade: document.getElementById('cidade').value,
             estado: document.getElementById('estado').value,
             senha: document.getElementById('senha').value,
@@ -77,6 +79,8 @@ document.getElementById('cadastro-form').addEventListener('submit', function(eve
                 console.log('Success:', data);
                 alert('Cadastro realizado com sucesso!');
                 window.location.href = 'login.html';
+                sessionStorage.getItem(email)
+                sessionStorage.setItem(email, limparCNPJ(email))
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -110,5 +114,9 @@ document.getElementById('senha').addEventListener('blur', function () {
 document.getElementById('confirmar-senha').addEventListener('blur', function () {
     validateAllFields();
 });
+
+function limparCNPJ(cnpj) {
+    return cnpj.replace(/\D/g, '');  // Remove tudo que não é dígito
+}
 
 loadScript("https://unpkg.com/vanilla-masker/build/vanilla-masker.min.js", applyMasks);

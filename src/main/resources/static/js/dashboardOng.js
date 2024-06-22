@@ -83,6 +83,20 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
+    function carregarDados() {
+        showLoadingSpinner();
+        fetch(`/ongs/cnpj/${sessionStorage.getItem('email')}`)
+            .then(response => response.json())
+            .then(data => {
+                sessionStorage.setItem('ongId', data.ongid);
+                renderAnimals();
+            })
+            .catch(error => {
+                console.error('Erro ao carregar animais:', error);
+                hideLoadingSpinner();
+            });
+    }
+
     //Função que monta o modal com as informações do animal para a edição
     function handleEditAnimal(event) {
         editMode = true;
@@ -220,4 +234,78 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Faz o carregamento dos animais
     fetchAnimals();
+    carregarDados();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Elementos do HTML
+    const modifyDataBtn = document.getElementById('modifyDataBtn');
+    const modifyDataModal = document.getElementById('modifyDataModal');
+    const modifyDataForm = document.getElementById('modifyDataForm');
+
+    // Função para abrir o modal de modificação de dados da ONG e preencher o formulário
+    modifyDataBtn.addEventListener('click', function() {
+        // Buscar dados atuais da ONG no backend
+        fetch(`/ongs/${sessionStorage.getItem('ongId')}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('ongNome').value = data.nome;
+                document.getElementById('ongDescricao').value = data.descricao;
+                document.getElementById('ongEmail').value = data.email;
+                document.getElementById('ongTelefone').value = data.telefone;
+                document.getElementById('ongEndereco').value = data.endereco;
+                document.getElementById('ongCidade').value = data.cidade;
+                document.getElementById('ongEstado').value = data.estado;
+                document.getElementById('ongCnpj').value = data.cnpj;
+                document.getElementById('ongPix').value = data.pix;
+                document.getElementById('ongSenha').value = data.senha;
+                modifyDataModal.style.display = 'block';
+            })
+            .catch(error => console.error('Erro ao carregar dados da ONG:', error));
+    });
+
+    // Fechar o modal de modificação de dados
+    document.querySelectorAll('.closeBtn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            modifyDataModal.style.display = 'none';
+        });
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target == modifyDataModal) {
+            modifyDataModal.style.display = 'none';
+        }
+    });
+
+    // Enviar dados atualizados da ONG para o backend
+    modifyDataForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = {
+            nome: document.getElementById('ongNome').value,
+            descricao: document.getElementById('ongDescricao').value,
+            email: document.getElementById('ongEmail').value,
+            telefone: document.getElementById('ongTelefone').value,
+            endereco: document.getElementById('ongEndereco').value,
+            cidade: document.getElementById('ongCidade').value,
+            estado: document.getElementById('ongEstado').value,
+            cnpj: document.getElementById('ongCnpj').value,
+            pix: document.getElementById('ongPix').value,
+            senha: document.getElementById('ongSenha').value
+        };
+
+        fetch(`/ongs/${sessionStorage.getItem('ongId')}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Dados da ONG atualizados:', data);
+                modifyDataModal.style.display = 'none';
+                // Atualizar a página ou exibir uma mensagem de sucesso
+            })
+            .catch(error => console.error('Erro ao atualizar dados da ONG:', error));
+    });
 });
