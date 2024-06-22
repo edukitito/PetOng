@@ -129,6 +129,14 @@ button[type="submit"]:hover {
     background-color: orange;
 }
 
+input:valid {
+    border-color: green;
+}
+
+input:invalid {
+    border-color: red;
+}
+
 .error {
     color: red;
     display: none;

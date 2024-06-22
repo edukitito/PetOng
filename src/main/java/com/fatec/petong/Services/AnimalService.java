@@ -27,10 +27,6 @@ public class AnimalService {
     }
 
     public List<Animais> searchAnimals(String tipo, String cidade, String estado) {
-        System.out.println(tipo);
-        System.out.println(cidade);
-        System.out.println(estado);
-
         if (tipo == null && cidade == null && estado == null) {
             return animalRepository.findAll();
         } else if (tipo != null && cidade.equals("") && estado.equals("")) {

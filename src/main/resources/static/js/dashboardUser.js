@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const estadoInput = document.getElementById('estado');
     const tipoInput = document.getElementById('tipo');
 
+    // Funções para mostrar e esconder o spinner de carregamento
     function showLoadingSpinner() {
         loadingSpinner.style.display = 'block';
         animalList.style.display = 'none';
@@ -16,25 +17,24 @@ document.addEventListener('DOMContentLoaded', function() {
         animalList.style.display = 'flex';
     }
 
+    // Renderiza os animais no DOM
     function renderAnimals(animals) {
-        animalList.innerHTML = '';
+        animalList.innerHTML = ''; // Limpa a lista anterior
         animals.forEach(animal => {
             const animalCard = document.createElement('div');
             animalCard.classList.add('animal-card');
-            let imageSrc = '';
-            if (animal.imagem) {
-                imageSrc = `data:image/jpeg;base64,${animal.imagem}`;
-            } else {
-                imageSrc = 'https://via.placeholder.com/150'; // URL válida para a imagem de placeholder
-            }
+            const imageSrc = animal.imagem ? `data:image/jpeg;base64,${animal.imagem}` : 'https://via.placeholder.com/150';
+
             animalCard.innerHTML = `
-                <img src="${imageSrc}" alt="${animal.nome}">
-                <h3>${animal.nome}</h3>
-                <p>Raça: ${animal.raca}</p>
-                <p>Espécie: ${animal.tipo}</p>
-                <p>Sexo: ${animal.sexo}</p>
-                <p>Idade: ${animal.idade} anos</p>
-                <p>Descrição: ${animal.descricao}</p>
+                <img src="${imageSrc}" alt="Imagem de ${animal.nome}" class="animal-image">
+                <div class="content">
+                    <h3>${animal.nome}</h3>
+                    <p>Raça: ${animal.raca}</p>
+                    <p>Espécie: ${animal.tipo}</p>
+                    <p>Sexo: ${animal.sexo}</p>
+                    <p>Idade: ${animal.idade} anos</p>
+                    <p>Descrição: ${animal.descricao}</p>
+                </div>
                 <div class="card-actions">
                     <button class="adopt-btn" data-id="${animal.id}">Adotar</button>
                 </div>
@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
             animalList.appendChild(animalCard);
         });
 
+        // Adiciona eventos de clique nos botões de adoção
         document.querySelectorAll('.adopt-btn').forEach(button => {
             button.addEventListener('click', handleAdoptAnimal);
         });
@@ -49,33 +50,39 @@ document.addEventListener('DOMContentLoaded', function() {
         hideLoadingSpinner();
     }
 
-    function fetchAnimals(queryParams = null) {
+    // Fetch para buscar animais com parâmetros de query
+    function fetchAnimals(queryParams = '') {
         showLoadingSpinner();
         fetch(`/animais/search${queryParams}`)
-            .then(response => response.json())
-            .then(data => {
-                renderAnimals(data);
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Falha ao carregar dados.');
+                }
+                return response.json();
             })
+            .then(data => renderAnimals(data))
             .catch(error => {
                 console.error('Erro ao carregar animais:', error);
                 hideLoadingSpinner();
             });
     }
 
+    // Trata o evento de adoção
     function handleAdoptAnimal(event) {
         const animalId = event.target.dataset.id;
         alert(`Iniciar processo de adoção para o animal com ID: ${animalId}`);
     }
 
+    // Trata o envio do formulário de busca
     searchForm.addEventListener('submit', function(event) {
         event.preventDefault();
         const formData = new FormData(searchForm);
 
-        // Verifique se o campo "Tipo" está vazio e remova-o se estiver
         if (!tipoInput.value) {
-            formData.delete('tipo'); // Remover o campo "tipo" do FormData se estiver vazio
+            formData.delete('tipo');
         }
-        if(!cidadeInput.value && !estadoInput){
+
+        if (!cidadeInput.value && !estadoInput.value) {
             formData.delete('cidade');
             formData.delete('estado');
         }
@@ -84,14 +91,15 @@ document.addEventListener('DOMContentLoaded', function() {
         fetchAnimals(`?${queryParams}`);
     });
 
-    // Adicione os ouvintes de evento para desativar os campos
+    // Adiciona lógica para desativar campos conflitantes
     cidadeInput.addEventListener('input', function() {
-        estadoInput.disabled = !!cidadeInput.value;
+        estadoInput.disabled = !!cidadeInput.value.trim();
     });
 
     estadoInput.addEventListener('input', function() {
-        cidadeInput.disabled = !!estadoInput.value;
+        cidadeInput.disabled = !!estadoInput.value.trim();
     });
 
+    // Inicia carregando todos os animais
     fetchAnimals();
 });

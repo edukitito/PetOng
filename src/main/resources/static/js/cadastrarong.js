@@ -1,122 +1,143 @@
-function loadScript(url, callback) {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = url;
-    script.onload = callback;
-    document.head.appendChild(script);
-}
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('cadastro-form');
 
-function applyMasks() {
-    VMasker(document.getElementById("cnpj")).maskPattern("99.999.999/9999-99");
-    VMasker(document.getElementById("telefone")).maskPattern("(99) 999999999");
-    VMasker(document.getElementById("estado")).maskPattern("AA");
-}
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        validateAllFields();
 
-function validateInput(inputId, errorId, regexPattern) {
-    const inputField = document.getElementById(inputId);
-    const errorSpan = document.getElementById(errorId);
-    const inputValue = inputField.value;
+        const isValid = form.checkValidity();
+        let cnpj = document.getElementById('cnpj').value;
+        cnpj = limparCNPJ(cnpj);
 
-    const isValid = regexPattern.test(inputValue);
+        if (isValid) {
+            const data = {
+                nome: document.getElementById('razao-social').value,
+                descricao: document.getElementById('nome-fantasia').value,
+                email: document.getElementById('email').value,
+                telefone: document.getElementById('telefone').value,
+                endereco: document.getElementById('endereco').value,
+                cnpj: cnpj,
+                cidade: document.getElementById('cidade').value,
+                estado: document.getElementById('estado').value,
+                senha: document.getElementById('senha').value,
+                pix: document.getElementById('pix').value
+            };
 
-    if (!isValid) {
+            console.log("Dados a serem enviados:", data);
+
+            fetch('http://localhost:8080/ongs/cadastrar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    alert('Cadastro realizado com sucesso!');
+                    window.location.href = 'login.html';
+                    sessionStorage.setItem(email, limparCNPJ(email));
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Erro ao cadastrar. Tente novamente.');
+                });
+        } else {
+            alert('Por favor, preencha todos os campos corretamente.');
+        }
+    });
+
+    const inputs = ['razao-social', 'nome-fantasia', 'cnpj', 'endereco', 'cidade', 'estado', 'telefone', 'email', 'pix', 'senha', 'confirmar-senha'];
+    inputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        input.addEventListener('blur', () => validateSingleInput(inputId));
+        input.addEventListener('input', () => validateSingleInput(inputId));
+        input.style.borderColor = '#ccc'; // Define a cor inicial da borda
+    });
+
+    function validateSingleInput(inputId) {
+        const errorId = inputId + '-error';
+        const inputField = document.getElementById(inputId);
+        const errorSpan = document.getElementById(errorId);
+        const inputValue = inputField.value;
+
+        let isValid = true;
+        let regexPattern;
+
+        switch (inputId) {
+            case 'razao-social':
+            case 'nome-fantasia':
+            case 'endereco':
+            case 'cidade':
+            case 'pix':
+                isValid = inputValue.length > 0;
+                break;
+            case 'cnpj':
+                regexPattern = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
+                isValid = regexPattern.test(inputValue);
+                break;
+            case 'telefone':
+                regexPattern = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+                isValid = regexPattern.test(inputValue);
+                break;
+            case 'email':
+                regexPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                isValid = regexPattern.test(inputValue);
+                break;
+            case 'estado':
+                regexPattern = /^[A-Z]{2}$/;
+                isValid = regexPattern.test(inputValue);
+                break;
+            case 'senha':
+                regexPattern = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/;
+                isValid = regexPattern.test(inputValue) && inputValue.length >= 8;
+                break;
+            case 'confirmar-senha':
+                isValid = inputValue === document.getElementById('senha').value;
+                break;
+            default:
+                isValid = inputValue.length > 0;
+        }
+
+        if (!isValid) {
+            displayError(inputField, errorSpan);
+        } else {
+            hideError(inputField, errorSpan);
+        }
+    }
+
+    function validateAllFields() {
+        inputs.forEach(validateSingleInput);
+    }
+
+    function displayError(inputField, errorSpan) {
+        inputField.style.borderColor = 'red';
         errorSpan.style.display = 'block';
-    } else {
+    }
+
+    function hideError(inputField, errorSpan) {
+        inputField.style.borderColor = 'green';
         errorSpan.style.display = 'none';
     }
-}
 
-function validateAllFields() {
-    validateInput('cnpj', 'cnpj-error', /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/);
-    validateInput('telefone', 'telefone-error', /^\(\d{2}\) \d{9}$/);
-    validateInput('email', 'email-error', /^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-    validateInput('estado', 'estado_error', /[A-Z]{2}$/);
-    validateInput('senha', 'senha_error', /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/);
-
-    const senha = document.getElementById('senha').value;
-    const confirmarSenha = document.getElementById('confirmar-senha').value;
-    const senhaError = document.getElementById('confirmar_senha_error');
-
-    if (senha !== confirmarSenha) {
-        senhaError.style.display = 'block';
-    } else {
-        senhaError.style.display = 'none';
+    function applyMasks() {
+        VMasker(document.getElementById("cnpj")).maskPattern("99.999.999/9999-99");
+        VMasker(document.getElementById("telefone")).maskPattern("(99) 99999-9999");
+        VMasker(document.getElementById("estado")).maskPattern("AA");
     }
-}
 
-document.getElementById('cadastro-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    validateAllFields();
-    const form = event.target;
-    const isValid = form.checkValidity();
-    let cnpj = document.getElementById('cnpj').value;
-    cnpj = limparCNPJ(cnpj);
-    if (isValid) {
-        const data = {
-            nome: document.getElementById('razao-social').value,
-            descricao: document.getElementById('nome-fantasia').value,
-            email: document.getElementById('email').value,
-            telefone: document.getElementById('telefone').value,
-            endereco: document.getElementById('endereco').value,
-            cnpj: cnpj,
-            cidade: document.getElementById('cidade').value,
-            estado: document.getElementById('estado').value,
-            senha: document.getElementById('senha').value,
-            pix: document.getElementById('pix').value
-        };
+    loadScript("https://unpkg.com/vanilla-masker/build/vanilla-masker.min.js", applyMasks);
 
-        console.log("Dados a serem enviados:", data);
+    function loadScript(url, callback) {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = url;
+        script.onload = callback;
+        document.head.appendChild(script);
+    }
 
-        fetch('http://localhost:8080/ongs/cadastrar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                alert('Cadastro realizado com sucesso!');
-                window.location.href = 'login.html';
-                sessionStorage.getItem(email)
-                sessionStorage.setItem(email, limparCNPJ(email))
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert('Erro ao cadastrar. Tente novamente.');
-            });
-    } else {
-        alert('Por favor, preencha todos os campos corretamente.');
+    function limparCNPJ(cnpj) {
+        return cnpj.replace(/\D/g, ''); // Remove tudo que não é dígito
     }
 });
-
-document.getElementById('cnpj').addEventListener('blur', function () {
-    validateInput('cnpj', 'cnpj-error', /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/);
-});
-
-document.getElementById('telefone').addEventListener('blur', function () {
-    validateInput('telefone', 'telefone-error', /^\(\d{2}\) \d{9}$/);
-});
-
-document.getElementById('email').addEventListener('blur', function () {
-    validateInput('email', 'email-error', /^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-});
-
-document.getElementById('estado').addEventListener('blur', function () {
-    validateInput('estado', 'estado_error', /[A-Z]{2}$/);
-});
-
-document.getElementById('senha').addEventListener('blur', function () {
-    validateInput('senha', 'senha_error', /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/);
-});
-
-document.getElementById('confirmar-senha').addEventListener('blur', function () {
-    validateAllFields();
-});
-
-function limparCNPJ(cnpj) {
-    return cnpj.replace(/\D/g, '');  // Remove tudo que não é dígito
-}
-
-loadScript("https://unpkg.com/vanilla-masker/build/vanilla-masker.min.js", applyMasks);

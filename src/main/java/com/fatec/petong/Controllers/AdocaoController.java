@@ -11,44 +11,46 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/adocoes")
+@RequestMapping("/adocoes")
 public class AdocaoController {
 
     @Autowired
     private AdocaoService adocaoService;
 
+    @PostMapping
+    public ResponseEntity<Adocao> createAdocao(@RequestBody Adocao adocao) {
+        Adocao createdAdocao = adocaoService.saveAdocao(adocao);
+        return ResponseEntity.ok(createdAdocao);
+    }
+
     @GetMapping
     public ResponseEntity<List<Adocao>> getAllAdocoes() {
-        List<Adocao> adocaoList = adocaoService.findAll();
-        return new ResponseEntity<>(adocaoList, HttpStatus.OK);
+        List<Adocao> adocoes = adocaoService.getAllAdocoes();
+        return ResponseEntity.ok(adocoes);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Adocao> getAdocaoById(@PathVariable Integer id) {
-        Optional<Adocao> adocao = adocaoService.findById(id);
-        return adocao.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @PostMapping
-    public ResponseEntity<Adocao> createAdocao(@RequestBody Adocao adocao) {
-        Adocao createdAdocao = adocaoService.create(adocao);
-        return new ResponseEntity<>(createdAdocao, HttpStatus.CREATED);
+        Optional<Adocao> adocao = adocaoService.getAdocaoById(id);
+        return adocao.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Adocao> updateAdocao(@PathVariable Integer id, @RequestBody Adocao adocaoDetails) {
-        Adocao updatedAdocao = adocaoService.update(id, adocaoDetails);
-        if (updatedAdocao != null) {
-            return new ResponseEntity<>(updatedAdocao, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Adocao> updateAdocao(@PathVariable Integer id, @RequestBody Adocao adocao) {
+        if (!adocaoService.getAdocaoById(id).isPresent()) {
+            return ResponseEntity.notFound().build();
         }
+        adocao.setId(id);
+        Adocao updatedAdocao = adocaoService.updateAdocao(adocao);
+        return ResponseEntity.ok(updatedAdocao);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAdocao(@PathVariable Integer id) {
-        adocaoService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        if (!adocaoService.getAdocaoById(id).isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        adocaoService.deleteAdocao(id);
+        return ResponseEntity.noContent().build();
     }
 }
