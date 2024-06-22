@@ -65,6 +65,8 @@ document.addEventListener('DOMContentLoaded', function() {
             button.addEventListener('click', handleDeleteAnimal);
         });
 
+
+
         hideLoadingSpinner();
     }
 
@@ -129,6 +131,8 @@ document.addEventListener('DOMContentLoaded', function() {
         animalIdToDelete = event.target.dataset.id;
         deleteConfirmModal.style.display = 'block';
     }
+
+
 
     //Função que envia o delete para o backend
     confirmDeleteBtn.addEventListener('click', function() {
@@ -307,5 +311,60 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Atualizar a página ou exibir uma mensagem de sucesso
             })
             .catch(error => console.error('Erro ao atualizar dados da ONG:', error));
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+    const deleteAccountConfirmModal = document.getElementById('deleteAccountConfirmModal');
+    const confirmAccountDeleteBtn = document.getElementById('confirmAccountDeleteBtn');
+    const cancelBtns = document.querySelectorAll('.cancelBtn');
+    const closeBtns = document.querySelectorAll('.closeBtn');
+
+    // Abre o modal de confirmação de exclusão de conta
+    deleteAccountBtn.addEventListener('click', function() {
+        deleteAccountConfirmModal.style.display = 'block';
+    });
+
+    // Confirma a exclusão da conta
+    confirmAccountDeleteBtn.addEventListener('click', function() {
+        // Chame a API ou o método para deletar a conta aqui
+        fetch(`/ongs/${sessionStorage.getItem('ongId')}`, {
+            method: 'DELETE'
+        }).then(response => {
+            // Tratar a resposta
+            if (response.ok) {
+                // Redirecionar para a página de login ou inicial após a exclusão
+                window.location.href = '/login.html';
+            } else {
+                alert('Erro ao tentar excluir a conta.');
+            }
+            deleteAccountConfirmModal.style.display = 'none';
+        }).catch(error => {
+            console.error('Erro ao excluir conta:', error);
+            deleteAccountConfirmModal.style.display = 'none';
+        });
+    });
+
+    // Fecha o modal de confirmação
+    cancelBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            deleteAccountConfirmModal.style.display = 'none';
+        });
+    });
+
+    // Fecha o modal se clicar no botão de fechar
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const modal = this.closest('.modal');
+            modal.style.display = 'none';
+        });
+    });
+
+    // Fecha o modal ao clicar fora dele
+    window.addEventListener('click', function(event) {
+        if (event.target.className === 'modal') {
+            event.target.style.display = 'none';
+        }
     });
 });
