@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    //Elementos do HTML
+    // Elementos do HTML
     const animalList = document.getElementById('animalList');
     const loadingSpinner = document.getElementById('loading-spinner');
     const animalModal = document.getElementById('animalModal');
@@ -12,13 +12,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalTitle = document.getElementById('modalTitle');
     const imagemPreview = document.getElementById('imagemPreview');
     const imagemAtualInput = document.getElementById('imagemAtual');
-    //Variaveis utilizadas
+    const modifyDataBtn = document.getElementById('modifyDataBtn');
+    const modifyDataModal = document.getElementById('modifyDataModal');
+    const modifyDataForm = document.getElementById('modifyDataForm');
+    const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+    const deleteAccountConfirmModal = document.getElementById('deleteAccountConfirmModal');
+    const confirmAccountDeleteBtn = document.getElementById('confirmAccountDeleteBtn');
+    const cancelBtns = document.querySelectorAll('.cancelBtn');
+
+    // Variáveis utilizadas
     let editMode = false;
     let currentAnimalId = null;
     let animals = [];
     let animalIdToDelete = null;
 
-    //Gerenciamento do loading
+    // Gerenciamento do loading
     function showLoadingSpinner() {
         loadingSpinner.style.display = 'block';
         animalList.style.display = 'none';
@@ -29,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
         animalList.style.display = 'flex';
     }
 
-    //Rendeniza os animais do modal
+    // Renderiza os animais do modal
     function renderAnimals() {
         animalList.innerHTML = '';
         animals.forEach(animal => {
@@ -65,12 +73,10 @@ document.addEventListener('DOMContentLoaded', function() {
             button.addEventListener('click', handleDeleteAnimal);
         });
 
-
-
         hideLoadingSpinner();
     }
 
-    //Função que busca os animais no backend
+    // Função que busca os animais no backend
     function fetchAnimals() {
         showLoadingSpinner();
         fetch(`/animais/A/${sessionStorage.getItem('email')}`)
@@ -85,21 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    function carregarDados() {
-        showLoadingSpinner();
-        fetch(`/ongs/cnpj/${sessionStorage.getItem('email')}`)
-            .then(response => response.json())
-            .then(data => {
-                sessionStorage.setItem('ongId', data.ongid);
-                renderAnimals();
-            })
-            .catch(error => {
-                console.error('Erro ao carregar animais:', error);
-                hideLoadingSpinner();
-            });
-    }
-
-    //Função que monta o modal com as informações do animal para a edição
+    // Função que monta o modal com as informações do animal para a edição
     function handleEditAnimal(event) {
         editMode = true;
         currentAnimalId = event.target.dataset.id;
@@ -126,15 +118,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    //Função usada para deletar o Animal mostrando o modal de confirmação
+    // Função usada para deletar o Animal mostrando o modal de confirmação
     function handleDeleteAnimal(event) {
         animalIdToDelete = event.target.dataset.id;
         deleteConfirmModal.style.display = 'block';
     }
 
-
-
-    //Função que envia o delete para o backend
+    // Função que envia o delete para o backend
     confirmDeleteBtn.addEventListener('click', function() {
         showLoadingSpinner();
         fetch(`/animais/${animalIdToDelete}`, {
@@ -152,12 +142,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     });
 
-    //Função para tirar o modal de deletar
+    // Função para tirar o modal de deletar
     cancelDeleteBtn.addEventListener('click', function() {
         deleteConfirmModal.style.display = 'none';
     });
 
-    //Modal para criar um animal
+    // Modal para criar um animal
     addAnimalBtn.addEventListener('click', function() {
         editMode = false;
         currentAnimalId = null;
@@ -168,14 +158,13 @@ document.addEventListener('DOMContentLoaded', function() {
         imagemAtualInput.value = '';  // Limpar o campo oculto ao adicionar um novo animal
     });
 
-    //Fechamento de modais
+    // Fechamento de modais
     closeBtn.forEach(btn => {
         btn.addEventListener('click', function() {
             animalModal.style.display = 'none';
             deleteConfirmModal.style.display = 'none';
         });
     });
-
 
     window.addEventListener('click', function(event) {
         if (event.target == animalModal || event.target == deleteConfirmModal) {
@@ -184,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    //Envia para o backend o animal passando como adição ou como edição
+    // Envia para o backend o animal passando como adição ou como edição
     animalForm.addEventListener('submit', function(event) {
         event.preventDefault();
         var formData = new FormData();
@@ -238,18 +227,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Faz o carregamento dos animais
     fetchAnimals();
-    carregarDados();
-});
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Elementos do HTML
-    const modifyDataBtn = document.getElementById('modifyDataBtn');
-    const modifyDataModal = document.getElementById('modifyDataModal');
-    const modifyDataForm = document.getElementById('modifyDataForm');
+    // Função para carregar os dados da ONG e inicializar os animais
+    function carregarDados() {
+        showLoadingSpinner();
+        fetch(`/ongs/cnpj/${sessionStorage.getItem('email')}`)
+            .then(response => response.json())
+            .then(data => {
+                sessionStorage.setItem('ongId', data.ongid);
+                renderAnimals();
+            })
+            .catch(error => {
+                console.error('Erro ao carregar dados da ONG:', error);
+                hideLoadingSpinner();
+            });
+    }
+
+    carregarDados();
 
     // Função para abrir o modal de modificação de dados da ONG e preencher o formulário
     modifyDataBtn.addEventListener('click', function() {
-        // Buscar dados atuais da ONG no backend
         fetch(`/ongs/${sessionStorage.getItem('ongId')}`)
             .then(response => response.json())
             .then(data => {
@@ -312,14 +309,6 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => console.error('Erro ao atualizar dados da ONG:', error));
     });
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    const deleteAccountBtn = document.getElementById('deleteAccountBtn');
-    const deleteAccountConfirmModal = document.getElementById('deleteAccountConfirmModal');
-    const confirmAccountDeleteBtn = document.getElementById('confirmAccountDeleteBtn');
-    const cancelBtns = document.querySelectorAll('.cancelBtn');
-    const closeBtns = document.querySelectorAll('.closeBtn');
 
     // Abre o modal de confirmação de exclusão de conta
     deleteAccountBtn.addEventListener('click', function() {
@@ -328,13 +317,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Confirma a exclusão da conta
     confirmAccountDeleteBtn.addEventListener('click', function() {
-        // Chame a API ou o método para deletar a conta aqui
         fetch(`/ongs/${sessionStorage.getItem('ongId')}`, {
             method: 'DELETE'
         }).then(response => {
-            // Tratar a resposta
             if (response.ok) {
-                // Redirecionar para a página de login ou inicial após a exclusão
                 window.location.href = '/login.html';
             } else {
                 alert('Erro ao tentar excluir a conta.');
@@ -350,14 +336,6 @@ document.addEventListener('DOMContentLoaded', function() {
     cancelBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             deleteAccountConfirmModal.style.display = 'none';
-        });
-    });
-
-    // Fecha o modal se clicar no botão de fechar
-    closeBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const modal = this.closest('.modal');
-            modal.style.display = 'none';
         });
     });
 

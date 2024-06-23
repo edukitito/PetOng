@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .catch((error) => {
                     console.error('Error:', error);
-                    alert('Erro ao cadastrar. Tente novamente.');
                 });
         } else {
             alert('Por favor, preencha todos os campos corretamente.');
