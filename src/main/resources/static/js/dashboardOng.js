@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const cancelBtns = document.querySelectorAll('.cancelBtn');
     const adocoesBtn = document.getElementById('adocoesBtn');
     const mainTitle = document.getElementById('main-title');
+    const dashboardBtn = document.getElementById('dashboardBtn');
 
     let editMode = false;
     let currentAnimalId = null;
@@ -56,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
         mainTitle.textContent = 'Meus Animais';
         if (adoptionList) {
             adoptionList.style.display = 'none';
+            adoptionList.innerHTML = ''; // Limpa o conteúdo da lista de animais
         }
         if (animalList) {
             animalList.style.display = 'flex';
@@ -469,5 +471,9 @@ document.addEventListener('DOMContentLoaded', function() {
     adocoesBtn.addEventListener('click', function() {
         animalList.style.display = 'none';
         fetchAdocoes();
+    });
+
+    dashboardBtn.addEventListener('click', function() {
+        fetchAnimals();
     });
 });
