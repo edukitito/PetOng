@@ -42,6 +42,11 @@
             </div>
             <button type="submit">Buscar</button>
         </form>
+        <ul>
+            <li><a href="#" id="adocoes">Adoções</a></li>
+            <li><a href="#" id="modifyDataBtn">Modificar Dados</a></li>
+            <li><a href="#" id="deleteAccountBtn">Excluir Conta</a></li>
+        </ul>
     </div>
     <div class="main-content">
         <h2>Animais Disponíveis</h2>
@@ -49,6 +54,69 @@
         <div id="animalList" class="animal-list">
             <!-- Lista de animais será inserida aqui -->
         </div>
+    </div>
+</div>
+
+<!-- Modal de confirmação para exclusão de conta -->
+<div id="deleteAccountConfirmModal" class="modal">
+    <div class="modal-content">
+        <span class="closeBtn">&times;</span>
+        <h2>Confirmar Exclusão da Conta</h2>
+        <p>Você tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.</p>
+        <div class="form-actions">
+            <button id="confirmAccountDeleteBtn">Confirmar Exclusão</button>
+            <button class="cancelBtn">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de modificação de dados do usuário -->
+<div id="modifyDataModal" class="modal">
+    <div class="modal-content">
+        <span class="closeBtn">&times;</span>
+        <h2>Modificar Dados do Usuário</h2>
+        <form id="modifyDataForm">
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email">
+            </div>
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha">
+            </div>
+            <div class="form-group">
+                <label for="telefone">Telefone</label>
+                <input type="text" id="telefone" name="telefone">
+            </div>
+            <div class="form-group">
+                <label for="cpf">CPF</label>
+                <input type="text" id="cpf" name="cpf">
+            </div>
+            <div class="form-group">
+                <label for="endereco">Endereço</label>
+                <input type="text" id="endereco" name="endereco">
+            </div>
+            <div class="form-group">
+                <label for="cidade">Cidade</label>
+                <input type="text" id="cidadeUser" name="cidade">
+            </div>
+            <div class="form-group">
+                <label for="estado">Estado</label>
+                <input type="text" id="estadoUser" name="estado">
+            </div>
+            <div class="form-group">
+                <label for="nickname">Nickname</label>
+                <input type="text" id="nickname" name="nickname">
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="saveBtn">Salvar</button>
+                <button type="button" class="cancelBtn">Cancelar</button>
+            </div>
+        </form>
     </div>
 </div>
 

@@ -29,20 +29,21 @@ public class AnimalService {
     public List<Animais> searchAnimals(String tipo, String cidade, String estado) {
         if (tipo == null && cidade == null && estado == null) {
             return animalRepository.findAll();
-        } else if (tipo != null && cidade.equals("") && estado.equals("")) {
+        } else if (tipo != null && (cidade == null || cidade.equals("")) && (estado == null || estado.equals(""))) {
             return animalRepository.findAnimaisByTipo(tipo);
-        } else if (tipo == null && cidade != null && estado == null) {
+        } else if (tipo == null && cidade != null && !cidade.equals("") && (estado == null || estado.equals(""))) {
             return animalRepository.findAnimaisByCidade(cidade);
-        } else if (tipo == null && cidade == null && estado != null) {
+        } else if (tipo == null && (cidade == null || cidade.equals("")) && estado != null && !estado.equals("")) {
             return animalRepository.findAnimaisByEstado(estado);
-        } else if (tipo != null && cidade != null && estado == null) {
+        } else if (tipo != null && cidade != null && !cidade.equals("") && (estado == null || estado.equals(""))) {
             return animalRepository.findAnimaisByCidadeTipo(cidade, tipo);
-        } else if (tipo != null && cidade == null && estado != null) {
+        } else if (tipo != null && (cidade == null || cidade.equals("")) && estado != null && !estado.equals("")) {
             return animalRepository.findAnimaisByEstadoTipo(estado, tipo);
         } else {
             return animalRepository.findAll();
         }
     }
+
 
 
     public Animais update(int id, Animais animais){
