@@ -12,18 +12,24 @@ public class Adocao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuarioId", referencedColumnName = "id")
     private Usuarios usuario;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "animalId", referencedColumnName = "animalId")
     private Animais animal;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ongId", referencedColumnName = "ongid")
     private ONGs ong;
+
     private Date dataAdocao;
+
     @Enumerated(EnumType.STRING)
     private EtapaAdocao etapaAdocao;
+
     @Enumerated(EnumType.STRING)
     private StatusAdocao statusAdocao;
 

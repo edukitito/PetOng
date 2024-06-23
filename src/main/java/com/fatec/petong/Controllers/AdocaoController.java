@@ -1,12 +1,15 @@
 package com.fatec.petong.Controllers;
 
 import com.fatec.petong.Entities.Adocao;
+import com.fatec.petong.Entities.Enums.EtapaAdocao;
+import com.fatec.petong.Entities.Enums.StatusAdocao;
 import com.fatec.petong.Services.AdocaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +22,10 @@ public class AdocaoController {
 
     @PostMapping
     public ResponseEntity<Adocao> createAdocao(@RequestBody Adocao adocao) {
+        adocao.setDataAdocao(new Date());
+        adocao.setEtapaAdocao(EtapaAdocao.INICIO);
+        adocao.setStatusAdocao(StatusAdocao.PENDENTE);
+        System.out.println(adocao.getOng().getOngid());
         Adocao createdAdocao = adocaoService.saveAdocao(adocao);
         return ResponseEntity.ok(createdAdocao);
     }

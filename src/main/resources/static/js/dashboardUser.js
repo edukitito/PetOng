@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const adoptConfirmModal = document.getElementById('adoptConfirmModal');
     const animalDetails = document.getElementById('animalDetails');
+    const confirmAdoptionBtn = document.getElementById('confirmAdoptionBtn');
     const deleteAccountConfirmModal = document.getElementById('deleteAccountConfirmModal');
     const modifyDataModal = document.getElementById('modifyDataModal');
     const modifyDataForm = document.getElementById('modifyDataForm');
@@ -17,7 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeBtns = document.querySelectorAll('.closeBtn');
     const cancelBtns = document.querySelectorAll('.cancelBtn');
 
-    // Inicialmente esconde todos os modais
+    let currentAnimalData = null;
+
     function hideAllModals() {
         adoptConfirmModal.style.display = 'none';
         deleteAccountConfirmModal.style.display = 'none';
@@ -26,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     hideAllModals();
 
-    // Funções para mostrar e esconder o spinner de carregamento
     function showLoadingSpinner() {
         loadingSpinner.style.display = 'block';
         animalList.style.display = 'none';
@@ -37,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
         animalList.style.display = 'flex';
     }
 
-    // Renderiza os animais no DOM
     function renderAnimals(animals) {
         animalList.innerHTML = ''; // Limpa a lista anterior
         animals.forEach(animal => {
@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function() {
             animalList.appendChild(animalCard);
         });
 
-        // Adiciona eventos de clique nos botões de adoção
         document.querySelectorAll('.adopt-btn').forEach(button => {
             button.addEventListener('click', handleAdoptAnimal);
         });
@@ -70,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
         hideLoadingSpinner();
     }
 
-    // Fetch para buscar animais com parâmetros de query
     function fetchAnimals(queryParams = '') {
         showLoadingSpinner();
         fetch(`/animais/search${queryParams}`)
@@ -87,13 +85,13 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    // Trata o evento de adoção
     function handleAdoptAnimal(event) {
         const animalId = event.target.dataset.id;
         fetch(`/animais/details/${animalId}`)
             .then(response => response.json())
             .then(data => {
                 if (data) {
+                    currentAnimalData = data;
                     showAdoptModal(data);
                 } else {
                     alert('Erro ao carregar detalhes do animal.');
@@ -102,7 +100,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Erro ao carregar detalhes do animal:', error));
     }
 
-    // Exibe o modal de confirmação de adoção
     function showAdoptModal(data) {
         animalDetails.innerHTML = `
             <img src="data:image/jpeg;base64,${data.animalImagem}" alt="Imagem de ${data.animalNome}">
@@ -124,7 +121,51 @@ document.addEventListener('DOMContentLoaded', function() {
         adoptConfirmModal.style.display = 'block';
     }
 
-    // Trata o envio do formulário de busca
+    function carregarDados() {
+        showLoadingSpinner();
+        fetch(`/users/email/${sessionStorage.getItem('email')}`)
+            .then(response => response.json())
+            .then(data => {
+                sessionStorage.setItem('userId', data.id);
+            })
+            .catch(error => {
+                console.error('Erro ao carregar user:', error);
+                hideLoadingSpinner();
+            });
+    }
+
+    confirmAdoptionBtn.addEventListener('click', function() {
+        const userId = sessionStorage.getItem('userId');
+        const adoptionData = {
+            usuario: { id: userId },
+            animal: { id: currentAnimalData.animalId },
+            ong: { ongid: currentAnimalData.ongId }, // Corrigido para garantir que a propriedade ongid esteja presente
+            dataAdocao: new Date(),
+            etapaAdocao: 'INICIO',
+            statusAdocao: 'PENDENTE'
+        };
+
+        fetch('/adocoes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(adoptionData)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Adoção solicitada com sucesso!');
+                    adoptConfirmModal.style.display = 'none';
+                } else {
+                    alert('Erro ao solicitar adoção.');
+                }
+            })
+            .catch(error => console.error('Erro ao solicitar adoção:', error));
+    });
+
+    fetchAnimals();
+    carregarDados();
+
     searchForm.addEventListener('submit', function(event) {
         event.preventDefault();
         const formData = new FormData(searchForm);
@@ -142,7 +183,6 @@ document.addEventListener('DOMContentLoaded', function() {
         fetchAnimals(`?${queryParams}`);
     });
 
-    // Adiciona lógica para desativar campos conflitantes
     cidadeInput.addEventListener('input', function() {
         estadoInput.disabled = !!cidadeInput.value.trim();
     });
@@ -151,29 +191,10 @@ document.addEventListener('DOMContentLoaded', function() {
         cidadeInput.disabled = !!estadoInput.value.trim();
     });
 
-    function carregarDados() {
-        showLoadingSpinner();
-        fetch(`/users/email/${sessionStorage.getItem('email')}`)
-            .then(response => response.json())
-            .then(data => {
-                sessionStorage.setItem('userId', data.id);
-            })
-            .catch(error => {
-                console.error('Erro ao carregar user:', error);
-                hideLoadingSpinner();
-            });
-    }
-
-    // Inicia carregando todos os animais
-    fetchAnimals();
-    carregarDados();
-
-    // Abre o modal de confirmação de exclusão de conta
     deleteAccountBtn.addEventListener('click', function() {
         deleteAccountConfirmModal.style.display = 'block';
     });
 
-    // Confirma a exclusão da conta
     confirmAccountDeleteBtn.addEventListener('click', function() {
         fetch(`/users/${sessionStorage.getItem('userId')}`, {
             method: 'DELETE'
@@ -191,7 +212,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Abre o modal de modificação de dados do usuário
     modifyDataBtn.addEventListener('click', function() {
         modifyDataModal.style.display = 'block';
         fetch(`/users/${sessionStorage.getItem('userId')}`)
@@ -210,7 +230,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Erro ao carregar dados do usuário:', error));
     });
 
-    // Fecha o modal de modificação de dados
     closeBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             modifyDataModal.style.display = 'none';
@@ -227,7 +246,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Submete os dados modificados do usuário
     modifyDataForm.addEventListener('submit', function(event) {
         event.preventDefault();
         const formData = new FormData(modifyDataForm);
@@ -251,7 +269,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Erro ao atualizar dados do usuário:', error));
     });
 
-    // Fecha o modal ao clicar fora dele
     window.addEventListener('click', function(event) {
         if (event.target === modifyDataModal) {
             modifyDataModal.style.display = 'none';
