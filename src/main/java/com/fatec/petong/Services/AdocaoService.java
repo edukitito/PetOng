@@ -24,6 +24,10 @@ public class AdocaoService {
         return adocaoRepository.findAll();
     }
 
+    public List<Adocao> getAdocoesByUserId(Integer userId) {
+        return adocaoRepository.findByUsuarioId(userId);
+    }
+
     @Transactional(readOnly = true)
     public Optional<Adocao> getAdocaoById(Integer id) {
         return adocaoRepository.findById(id);

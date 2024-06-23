@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const cidadeInput = document.getElementById('cidade');
     const estadoInput = document.getElementById('estado');
     const tipoInput = document.getElementById('tipo');
-
     const adoptConfirmModal = document.getElementById('adoptConfirmModal');
     const animalDetails = document.getElementById('animalDetails');
     const confirmAdoptionBtn = document.getElementById('confirmAdoptionBtn');
@@ -15,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const deleteAccountBtn = document.getElementById('deleteAccountBtn');
     const confirmAccountDeleteBtn = document.getElementById('confirmAccountDeleteBtn');
     const modifyDataBtn = document.getElementById('modifyDataBtn');
+    const adocoesBtn = document.getElementById('adocoes');
     const closeBtns = document.querySelectorAll('.closeBtn');
     const cancelBtns = document.querySelectorAll('.cancelBtn');
 
@@ -85,6 +85,18 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
+    function fetchAdocoes() {
+        showLoadingSpinner();
+        const userId = sessionStorage.getItem('userId');
+        fetch(`/adocoes/usuario/${userId}`)
+            .then(response => response.json())
+            .then(data => renderAdocoes(data))
+            .catch(error => {
+                console.error('Erro ao carregar adoções:', error);
+                hideLoadingSpinner();
+            });
+    }
+
     function handleAdoptAnimal(event) {
         const animalId = event.target.dataset.id;
         fetch(`/animais/details/${animalId}`)
@@ -119,6 +131,45 @@ document.addEventListener('DOMContentLoaded', function() {
             <p><strong>Estado:</strong> ${data.ongEstado}</p>
         `;
         adoptConfirmModal.style.display = 'block';
+    }
+
+    function renderAdocoes(adocoes) {
+        animalList.innerHTML = ''; // Limpa a lista anterior
+        adocoes.forEach(adocao => {
+            const animal = adocao.animal;
+            const ong = adocao.ong;
+            const imageSrc = animal.imagem ? `data:image/jpeg;base64,${animal.imagem}` : 'https://via.placeholder.com/150';
+
+            const animalCard = document.createElement('div');
+            animalCard.classList.add('animal-card');
+
+            animalCard.innerHTML = `
+                <img src="${imageSrc}" alt="Imagem de ${animal.nome}" class="animal-image">
+                <div class="content">
+                    <h3>${animal.nome}</h3>
+                    <p>Raça: ${animal.raca}</p>
+                    <p>Espécie: ${animal.tipo}</p>
+                    <p>Sexo: ${animal.sexo}</p>
+                    <p>Idade: ${animal.idade} anos</p>
+                    <p>Descrição: ${animal.descricao}</p>
+                    <h3>Dados da Adoção</h3>
+                    <p><strong>Data da Adoção:</strong> ${new Date(adocao.dataAdocao).toLocaleDateString()}</p>
+                    <p><strong>Etapa da Adoção:</strong> ${adocao.etapaAdocao}</p>
+                    <p><strong>Status da Adoção:</strong> ${adocao.statusAdocao}</p>
+                    <h3>Dados da ONG</h3>
+                    <p><strong>Nome:</strong> ${ong.nome}</p>
+                    <p><strong>Descrição:</strong> ${ong.descricao}</p>
+                    <p><strong>Email:</strong> ${ong.email}</p>
+                    <p><strong>Telefone:</strong> ${ong.telefone}</p>
+                    <p><strong>Endereço:</strong> ${ong.endereco}</p>
+                    <p><strong>Cidade:</strong> ${ong.cidade}</p>
+                    <p><strong>Estado:</strong> ${ong.estado}</p>
+                </div>
+            `;
+            animalList.appendChild(animalCard);
+        });
+
+        hideLoadingSpinner();
     }
 
     function carregarDados() {
@@ -228,6 +279,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('nickname').value = data.nickname;
             })
             .catch(error => console.error('Erro ao carregar dados do usuário:', error));
+    });
+
+    adocoesBtn.addEventListener('click', function() {
+        fetchAdocoes();
     });
 
     closeBtns.forEach(btn => {

@@ -52,6 +52,12 @@ public class AdocaoController {
         return ResponseEntity.ok(updatedAdocao);
     }
 
+    @GetMapping("/usuario/{userId}")
+    public ResponseEntity<List<Adocao>> getAdocoesByUserId(@PathVariable Integer userId) {
+        List<Adocao> adocoes = adocaoService.getAdocoesByUserId(userId);
+        return ResponseEntity.ok(adocoes);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAdocao(@PathVariable Integer id) {
         if (!adocaoService.getAdocaoById(id).isPresent()) {
