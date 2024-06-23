@@ -1,6 +1,7 @@
 package com.fatec.petong.Controllers;
 
 import com.fatec.petong.Entities.Animais;
+import com.fatec.petong.Entities.AnimalOngDTO;
 import com.fatec.petong.Entities.ONGs;
 import com.fatec.petong.Services.AnimalService;
 import com.fatec.petong.Services.ONGService;
@@ -146,4 +147,12 @@ public class AnimalController {
         List<Animais> animais = service.findAnimaisByCidade(cidade);
         return new ResponseEntity<>(animais, HttpStatus.OK);
     }
+
+    @GetMapping("/details/{id}")
+    public ResponseEntity<AnimalOngDTO> getAnimalOngDetails(@PathVariable Integer id) {
+        Optional<AnimalOngDTO> dto = service.getAnimalOngDetails(id);
+        return dto.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
 }

@@ -6,6 +6,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const estadoInput = document.getElementById('estado');
     const tipoInput = document.getElementById('tipo');
 
+    const adoptConfirmModal = document.getElementById('adoptConfirmModal');
+    const animalDetails = document.getElementById('animalDetails');
+    const deleteAccountConfirmModal = document.getElementById('deleteAccountConfirmModal');
+    const modifyDataModal = document.getElementById('modifyDataModal');
+    const modifyDataForm = document.getElementById('modifyDataForm');
+    const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+    const confirmAccountDeleteBtn = document.getElementById('confirmAccountDeleteBtn');
+    const modifyDataBtn = document.getElementById('modifyDataBtn');
+    const closeBtns = document.querySelectorAll('.closeBtn');
+    const cancelBtns = document.querySelectorAll('.cancelBtn');
+
+    // Inicialmente esconde todos os modais
+    function hideAllModals() {
+        adoptConfirmModal.style.display = 'none';
+        deleteAccountConfirmModal.style.display = 'none';
+        modifyDataModal.style.display = 'none';
+    }
+
+    hideAllModals();
+
     // Funções para mostrar e esconder o spinner de carregamento
     function showLoadingSpinner() {
         loadingSpinner.style.display = 'block';
@@ -70,7 +90,38 @@ document.addEventListener('DOMContentLoaded', function() {
     // Trata o evento de adoção
     function handleAdoptAnimal(event) {
         const animalId = event.target.dataset.id;
-        alert(`Iniciar processo de adoção para o animal com ID: ${animalId}`);
+        fetch(`/animais/details/${animalId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    showAdoptModal(data);
+                } else {
+                    alert('Erro ao carregar detalhes do animal.');
+                }
+            })
+            .catch(error => console.error('Erro ao carregar detalhes do animal:', error));
+    }
+
+    // Exibe o modal de confirmação de adoção
+    function showAdoptModal(data) {
+        animalDetails.innerHTML = `
+            <img src="data:image/jpeg;base64,${data.animalImagem}" alt="Imagem de ${data.animalNome}">
+            <p><strong>Nome:</strong> ${data.animalNome}</p>
+            <p><strong>Raça:</strong> ${data.animalRaca}</p>
+            <p><strong>Sexo:</strong> ${data.animalSexo}</p>
+            <p><strong>Descrição:</strong> ${data.animalDescricao}</p>
+            <p><strong>Idade:</strong> ${data.animalIdade} anos</p>
+            <p><strong>Tipo:</strong> ${data.animalTipo}</p>
+            <h3>Dados da ONG</h3>
+            <p><strong>Nome:</strong> ${data.ongNome}</p>
+            <p><strong>Descrição:</strong> ${data.ongDescricao}</p>
+            <p><strong>Email:</strong> ${data.ongEmail}</p>
+            <p><strong>Telefone:</strong> ${data.ongTelefone}</p>
+            <p><strong>Endereço:</strong> ${data.ongEndereco}</p>
+            <p><strong>Cidade:</strong> ${data.ongCidade}</p>
+            <p><strong>Estado:</strong> ${data.ongEstado}</p>
+        `;
+        adoptConfirmModal.style.display = 'block';
     }
 
     // Trata o envio do formulário de busca
@@ -116,22 +167,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicia carregando todos os animais
     fetchAnimals();
     carregarDados();
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    const deleteAccountBtn = document.getElementById('deleteAccountBtn');
-    const deleteAccountConfirmModal = document.getElementById('deleteAccountConfirmModal');
-    const confirmAccountDeleteBtn = document.getElementById('confirmAccountDeleteBtn');
-    const modifyDataBtn = document.getElementById('modifyDataBtn');
-    const modifyDataModal = document.getElementById('modifyDataModal');
-    const modifyDataForm = document.getElementById('modifyDataForm');
-    const cancelBtns = document.querySelectorAll('.cancelBtn');
-    const closeBtns = document.querySelectorAll('.closeBtn');
-
-    window.onload = function() {
-        deleteAccountConfirmModal.style.display = 'none';
-        modifyDataModal.style.display = 'none';
-    };
 
     // Abre o modal de confirmação de exclusão de conta
     deleteAccountBtn.addEventListener('click', function() {
@@ -144,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'DELETE'
         }).then(response => {
             if (response.ok) {
-                alert('Conta excluida')
+                alert('Conta excluída');
                 window.location.href = '/login.html';
             } else {
                 alert('Erro ao tentar excluir a conta.');
@@ -179,12 +214,16 @@ document.addEventListener('DOMContentLoaded', function() {
     closeBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             modifyDataModal.style.display = 'none';
+            adoptConfirmModal.style.display = 'none';
+            deleteAccountConfirmModal.style.display = 'none';
         });
     });
 
     cancelBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             modifyDataModal.style.display = 'none';
+            adoptConfirmModal.style.display = 'none';
+            deleteAccountConfirmModal.style.display = 'none';
         });
     });
 
@@ -216,6 +255,10 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('click', function(event) {
         if (event.target === modifyDataModal) {
             modifyDataModal.style.display = 'none';
+        } else if (event.target === adoptConfirmModal) {
+            adoptConfirmModal.style.display = 'none';
+        } else if (event.target === deleteAccountConfirmModal) {
+            deleteAccountConfirmModal.style.display = 'none';
         }
     });
 });

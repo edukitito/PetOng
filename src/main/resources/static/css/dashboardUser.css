@@ -322,3 +322,44 @@ button:hover {
 #modifyDataModal .saveBtn:hover {
     background-color: #45a049;
 }
+
+/* Estilos para o modal de confirmação de adoção */
+#adoptConfirmModal .modal-content {
+    width: 60%;
+}
+
+#adoptConfirmModal .form-group {
+    margin-bottom: 1rem;
+}
+
+#adoptConfirmModal .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+#adoptConfirmModal .form-group input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#adoptConfirmModal .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+#adoptConfirmModal .saveBtn {
+    background-color: #4CAF50;
+}
+
+#adoptConfirmModal .saveBtn:hover {
+    background-color: #45a049;
+}
+
+#animalDetails img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+}
