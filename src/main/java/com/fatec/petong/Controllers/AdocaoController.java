@@ -52,6 +52,30 @@ public class AdocaoController {
         return ResponseEntity.ok(updatedAdocao);
     }
 
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Void> updateAdocaoStatus(@PathVariable Integer id, @RequestBody Adocao adocao) {
+        if (!adocaoService.getAdocaoById(id).isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        adocaoService.updateAdocaoStatus(id, adocao.getStatusAdocao());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/etapa")
+    public ResponseEntity<Void> updateAdocaoEtapa(@PathVariable Integer id, @RequestBody Adocao adocao) {
+        if (!adocaoService.getAdocaoById(id).isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        adocaoService.updateAdocaoEtapa(id, adocao.getEtapaAdocao());
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/ong/{ongId}")
+    public ResponseEntity<List<Adocao>> getAdocoesByOngId(@PathVariable Integer ongId) {
+        List<Adocao> adocoes = adocaoService.getAdocoesByOngId(ongId);
+        return ResponseEntity.ok(adocoes);
+    }
+
     @GetMapping("/usuario/{userId}")
     public ResponseEntity<List<Adocao>> getAdocoesByUserId(@PathVariable Integer userId) {
         List<Adocao> adocoes = adocaoService.getAdocoesByUserId(userId);

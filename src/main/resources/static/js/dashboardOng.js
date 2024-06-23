@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Elementos do HTML
     const animalList = document.getElementById('animalList');
+    const adoptionList = document.getElementById('adoptionList');
     const loadingSpinner = document.getElementById('loading-spinner');
     const animalModal = document.getElementById('animalModal');
     const deleteConfirmModal = document.getElementById('deleteConfirmModal');
@@ -19,64 +19,84 @@ document.addEventListener('DOMContentLoaded', function() {
     const deleteAccountConfirmModal = document.getElementById('deleteAccountConfirmModal');
     const confirmAccountDeleteBtn = document.getElementById('confirmAccountDeleteBtn');
     const cancelBtns = document.querySelectorAll('.cancelBtn');
+    const adocoesBtn = document.getElementById('adocoesBtn');
+    const mainTitle = document.getElementById('main-title');
 
-    // Variáveis utilizadas
     let editMode = false;
     let currentAnimalId = null;
     let animals = [];
+    let adocoes = [];
     let animalIdToDelete = null;
 
-    // Gerenciamento do loading
     function showLoadingSpinner() {
-        loadingSpinner.style.display = 'block';
-        animalList.style.display = 'none';
+        if (loadingSpinner) {
+            loadingSpinner.style.display = 'block';
+        }
+        if (animalList) {
+            animalList.style.display = 'none';
+        }
+        if (adoptionList) {
+            adoptionList.style.display = 'none';
+        }
     }
 
     function hideLoadingSpinner() {
-        loadingSpinner.style.display = 'none';
-        animalList.style.display = 'flex';
+        if (loadingSpinner) {
+            loadingSpinner.style.display = 'none';
+        }
+        if (animalList) {
+            animalList.style.display = 'flex';
+        }
+        if (adoptionList) {
+            adoptionList.style.display = 'flex';
+        }
     }
 
-    // Renderiza os animais do modal
     function renderAnimals() {
-        animalList.innerHTML = '';
-        animals.forEach(animal => {
-            const animalCard = document.createElement('div');
-            animalCard.classList.add('animal-card');
-            let imageSrc = '';
-            if (animal.imagem) {
-                imageSrc = `data:image/jpeg;base64,${animal.imagem}`;
-            } else {
-                imageSrc = 'https://via.placeholder.com/150'; // URL válida para a imagem de placeholder
-            }
-            animalCard.innerHTML = `
-                <img src="${imageSrc}" alt="${animal.nome}">
-                <h3>${animal.nome}</h3>
-                <p>Raça: ${animal.raca}</p>
-                <p>Espécie: ${animal.tipo}</p>
-                <p>Sexo: ${animal.sexo}</p>
-                <p>Idade: ${animal.idade} anos</p>
-                <p>Descrição: ${animal.descricao}</p>
-                <div class="card-actions">
-                    <button class="edit-btn" data-id="${animal.id}">Editar</button>
-                    <button class="delete-btn" data-id="${animal.id}">Excluir</button>
-                </div>
-            `;
-            animalList.appendChild(animalCard);
-        });
+        mainTitle.textContent = 'Meus Animais';
+        if (adoptionList) {
+            adoptionList.style.display = 'none';
+        }
+        if (animalList) {
+            animalList.style.display = 'flex';
+            animalList.innerHTML = '';
+            animals.forEach(animal => {
+                const animalCard = document.createElement('div');
+                animalCard.classList.add('animal-card');
+                let imageSrc = '';
+                if (animal.imagem) {
+                    imageSrc = `data:image/jpeg;base64,${animal.imagem}`;
+                } else {
+                    imageSrc = 'https://via.placeholder.com/150'; // URL válida para a imagem de placeholder
+                }
+                animalCard.innerHTML = `
+                    <img src="${imageSrc}" alt="${animal.nome}">
+                    <h3>${animal.nome}</h3>
+                    <p>Raça: ${animal.raca}</p>
+                    <p>Espécie: ${animal.tipo}</p>
+                    <p>Sexo: ${animal.sexo}</p>
+                    <p>Idade: ${animal.idade} anos</p>
+                    <p>Descrição: ${animal.descricao}</p>
+                    <div class="card-actions">
+                        <button class="edit-btn" data-id="${animal.id}">Editar</button>
+                        <button class="delete-btn" data-id="${animal.id}">Excluir</button>
+                    </div>
+                `;
+                animalList.appendChild(animalCard);
+            });
 
-        document.querySelectorAll('.edit-btn').forEach(button => {
-            button.addEventListener('click', handleEditAnimal);
-        });
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.addEventListener('click', handleEditAnimal);
+            });
 
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', handleDeleteAnimal);
-        });
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', handleDeleteAnimal);
+            });
+        }
 
         hideLoadingSpinner();
     }
 
-    // Função que busca os animais no backend
     function fetchAnimals() {
         showLoadingSpinner();
         fetch(`/animais/A/${sessionStorage.getItem('email')}`)
@@ -91,7 +111,83 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    // Função que monta o modal com as informações do animal para a edição
+    function renderAdocoes() {
+        mainTitle.textContent = 'Adoções';
+        if (animalList) {
+            animalList.style.display = 'none';
+            animalList.innerHTML = ''; // Limpa o conteúdo da lista de animais
+        }
+        if (adoptionList) {
+            adoptionList.style.display = 'flex';
+            adoptionList.innerHTML = ''; // Limpa o conteúdo da lista de adoções
+            adocoes.forEach(adocao => {
+                const adoptionCard = document.createElement('div');
+                adoptionCard.classList.add('adoption-card');
+                let imageSrc = '';
+                if (adocao.animal.imagem) {
+                    imageSrc = `data:image/jpeg;base64,${adocao.animal.imagem}`;
+                } else {
+                    imageSrc = 'https://via.placeholder.com/150'; // URL válida para a imagem de placeholder
+                }
+                adoptionCard.innerHTML = `
+                <img src="${imageSrc}" alt="${adocao.animal.nome}">
+                <h3>${adocao.animal.nome}</h3>
+                <p>Raça: ${adocao.animal.raca}</p>
+                <p>Espécie: ${adocao.animal.tipo}</p>
+                <p>Sexo: ${adocao.animal.sexo}</p>
+                <p>Idade: ${adocao.animal.idade} anos</p>
+                <p>Descrição: ${adocao.animal.descricao}</p>
+                <p>Usuário: ${adocao.usuario.nome}</p>
+                <p>Email: ${adocao.usuario.email}</p>
+                <p>Telefone: ${adocao.usuario.telefone}</p>
+                <div class="status-section" style="color: ${adocao.statusAdocao === 'PENDENTE' ? 'red' : 'black'};">
+                    <label for="statusAdocao">Status:</label>
+                    <select class="statusAdocao" data-id="${adocao.id}">
+                        <option value="PENDENTE" ${adocao.statusAdocao === 'PENDENTE' ? 'selected' : ''}>PENDENTE</option>
+                        <option value="EM_ANDAMENTO" ${adocao.statusAdocao === 'EM_ANDAMENTO' ? 'selected' : ''}>EM ANDAMENTO</option>
+                        <option value="CONCLUIDA" ${adocao.statusAdocao === 'CONCLUIDA' ? 'selected' : ''}>CONCLUÍDA</option>
+                        <option value="CANCELADA" ${adocao.statusAdocao === 'CANCELADA' ? 'selected' : ''}>CANCELADA</option>
+                    </select>
+                </div>
+                <div class="stage-section">
+                    <label for="etapaAdocao">Etapa:</label>
+                    <select class="etapaAdocao" data-id="${adocao.id}">
+                        <option value="INICIO" ${adocao.etapaAdocao === 'INICIO' ? 'selected' : ''}>INÍCIO</option>
+                        <option value="ENTREVISTA" ${adocao.etapaAdocao === 'ENTREVISTA' ? 'selected' : ''}>ENTREVISTA</option>
+                        <option value="DOCUMENTACAO" ${adocao.etapaAdocao === 'DOCUMENTACAO' ? 'selected' : ''}>DOCUMENTAÇÃO</option>
+                        <option value="ENTREGA" ${adocao.etapaAdocao === 'ENTREGA' ? 'selected' : ''}>ENTREGA</option>
+                    </select>
+                </div>
+            `;
+                adoptionList.appendChild(adoptionCard);
+            });
+
+            document.querySelectorAll('.statusAdocao').forEach(select => {
+                select.addEventListener('change', handleChangeStatus);
+            });
+
+            document.querySelectorAll('.etapaAdocao').forEach(select => {
+                select.addEventListener('change', handleChangeStage);
+            });
+        }
+
+        hideLoadingSpinner();
+    }
+
+    function fetchAdocoes() {
+        showLoadingSpinner();
+        fetch(`/adocoes/ong/${sessionStorage.getItem('ongId')}`)
+            .then(response => response.json())
+            .then(data => {
+                adocoes = data;
+                renderAdocoes();
+            })
+            .catch(error => {
+                console.error('Erro ao carregar adoções:', error);
+                hideLoadingSpinner();
+            });
+    }
+
     function handleEditAnimal(event) {
         editMode = true;
         currentAnimalId = event.target.dataset.id;
@@ -107,10 +203,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (animal.imagem) {
                 imagemPreview.src = `data:image/jpeg;base64,${animal.imagem}`;
                 imagemPreview.style.display = 'block';
-                imagemAtualInput.value = animal.imagem;  // Salvar a imagem atual no campo oculto
+                imagemAtualInput.value = animal.imagem;
             } else {
                 imagemPreview.style.display = 'none';
-                imagemAtualInput.value = '';  // Limpar o campo oculto se não houver imagem
+                imagemAtualInput.value = '';
             }
 
             modalTitle.textContent = 'Editar Animal';
@@ -118,13 +214,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Função usada para deletar o Animal mostrando o modal de confirmação
     function handleDeleteAnimal(event) {
         animalIdToDelete = event.target.dataset.id;
         deleteConfirmModal.style.display = 'block';
     }
 
-    // Função que envia o delete para o backend
     confirmDeleteBtn.addEventListener('click', function() {
         showLoadingSpinner();
         fetch(`/animais/${animalIdToDelete}`, {
@@ -142,12 +236,10 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     });
 
-    // Função para tirar o modal de deletar
     cancelDeleteBtn.addEventListener('click', function() {
         deleteConfirmModal.style.display = 'none';
     });
 
-    // Modal para criar um animal
     addAnimalBtn.addEventListener('click', function() {
         editMode = false;
         currentAnimalId = null;
@@ -155,10 +247,9 @@ document.addEventListener('DOMContentLoaded', function() {
         modalTitle.textContent = 'Adicionar Animal';
         animalModal.style.display = 'block';
         imagemPreview.style.display = 'none';
-        imagemAtualInput.value = '';  // Limpar o campo oculto ao adicionar um novo animal
+        imagemAtualInput.value = '';
     });
 
-    // Fechamento de modais
     closeBtn.forEach(btn => {
         btn.addEventListener('click', function() {
             animalModal.style.display = 'none';
@@ -173,7 +264,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Envia para o backend o animal passando como adição ou como edição
     animalForm.addEventListener('submit', function(event) {
         event.preventDefault();
         var formData = new FormData();
@@ -188,7 +278,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (imagemInput.files.length > 0) {
             formData.append('imagem', imagemInput.files[0]);
         } else if (editMode && imagemAtualInput.value) {
-            // Se estiver no modo de edição e não houver uma nova imagem selecionada, envie a imagem atual
             var byteCharacters = atob(imagemAtualInput.value);
             var byteNumbers = new Array(byteCharacters.length);
             for (var i = 0; i < byteCharacters.length; i++) {
@@ -199,7 +288,6 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('imagem', blob, 'imagem.jpg');
         }
 
-        // Expressão lambda para identificar se o edit mode está ativo e fazer uma ação
         const url = editMode ? `/animais/${currentAnimalId}` : '/animais';
         const method = editMode ? 'PUT' : 'POST';
 
@@ -225,10 +313,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     });
 
-    // Faz o carregamento dos animais
     fetchAnimals();
 
-    // Função para carregar os dados da ONG e inicializar os animais
     function carregarDados() {
         showLoadingSpinner();
         fetch(`/ongs/cnpj/${sessionStorage.getItem('email')}`)
@@ -245,7 +331,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     carregarDados();
 
-    // Função para abrir o modal de modificação de dados da ONG e preencher o formulário
     modifyDataBtn.addEventListener('click', function() {
         fetch(`/ongs/${sessionStorage.getItem('ongId')}`)
             .then(response => response.json())
@@ -265,7 +350,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Erro ao carregar dados da ONG:', error));
     });
 
-    // Fechar o modal de modificação de dados
     document.querySelectorAll('.closeBtn').forEach(btn => {
         btn.addEventListener('click', function() {
             modifyDataModal.style.display = 'none';
@@ -278,7 +362,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Enviar dados atualizados da ONG para o backend
     modifyDataForm.addEventListener('submit', function(event) {
         event.preventDefault();
         const formData = {
@@ -305,17 +388,14 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 console.log('Dados da ONG atualizados:', data);
                 modifyDataModal.style.display = 'none';
-                // Atualizar a página ou exibir uma mensagem de sucesso
             })
             .catch(error => console.error('Erro ao atualizar dados da ONG:', error));
     });
 
-    // Abre o modal de confirmação de exclusão de conta
     deleteAccountBtn.addEventListener('click', function() {
         deleteAccountConfirmModal.style.display = 'block';
     });
 
-    // Confirma a exclusão da conta
     confirmAccountDeleteBtn.addEventListener('click', function() {
         fetch(`/ongs/${sessionStorage.getItem('ongId')}`, {
             method: 'DELETE'
@@ -332,17 +412,62 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Fecha o modal de confirmação
     cancelBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             deleteAccountConfirmModal.style.display = 'none';
         });
     });
 
-    // Fecha o modal ao clicar fora dele
     window.addEventListener('click', function(event) {
         if (event.target.className === 'modal') {
             event.target.style.display = 'none';
         }
+    });
+
+    function handleChangeStatus(event) {
+        const adocaoId = event.target.dataset.id;
+        const newStatus = event.target.value;
+
+        fetch(`/adocoes/${adocaoId}/status`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ statusAdocao: newStatus })
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Status de adoção atualizado com sucesso!');
+                } else {
+                    alert('Erro ao atualizar status da adoção.');
+                }
+            })
+            .catch(error => console.error('Erro ao atualizar status da adoção:', error));
+    }
+
+    function handleChangeStage(event) {
+        const adocaoId = event.target.dataset.id;
+        const newStage = event.target.value;
+
+        fetch(`/adocoes/${adocaoId}/etapa`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ etapaAdocao: newStage })
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Etapa de adoção atualizada com sucesso!');
+                } else {
+                    alert('Erro ao atualizar etapa da adoção.');
+                }
+            })
+            .catch(error => console.error('Erro ao atualizar etapa da adoção:', error));
+    }
+
+    adocoesBtn.addEventListener('click', function() {
+        animalList.style.display = 'none';
+        fetchAdocoes();
     });
 });

@@ -96,13 +96,13 @@ body {
     margin-top: 2rem;
 }
 
-.animal-list {
+.animal-list, .adoption-list {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
 }
 
-.animal-card {
+.animal-card, .adoption-card {
     background: white;
     padding: 1rem;
     border-radius: 5px;
@@ -113,32 +113,32 @@ body {
     align-items: center;
 }
 
-.animal-card img {
+.animal-card img, .adoption-card img {
     width: 100%;
     height: auto;
     border-radius: 5px;
     margin-bottom: 0.5rem;
     object-fit: cover;
-    max-height: 200px; /* Ajusta a altura máxima das imagens */
+    max-height: 200px;
 }
 
-.animal-card h3 {
+.animal-card h3, .adoption-card h3 {
     margin-bottom: 0.5rem;
     text-align: center;
 }
 
-.animal-card p {
+.animal-card p, .adoption-card p {
     margin-bottom: 0.5rem;
     text-align: center;
 }
 
-.animal-card .card-actions {
+.animal-card .card-actions, .adoption-card .status-section, .adoption-card .stage-section {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
 
-.animal-card .card-actions button {
+.animal-card .card-actions button, .adoption-card select {
     background: #f39c12;
     color: white;
     border: none;
@@ -148,8 +148,19 @@ body {
     transition: background 0.3s;
 }
 
-.animal-card .card-actions button:hover {
+.animal-card .card-actions button:hover, .adoption-card select:hover {
     background: #e67e22;
+}
+
+.adoption-card .status-section, .adoption-card .stage-section {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.adoption-card .status-section label, .adoption-card .stage-section label {
+    margin-bottom: 0.25rem;
+    font-weight: bold;
 }
 
 /* Modal */
@@ -194,9 +205,8 @@ body {
     max-height: 200px;
     object-fit: cover;
     margin-top: 10px;
-    display: none; /* Ocultar por padrão */
+    display: none;
 }
-
 
 .form-group {
     margin-bottom: 1rem;
@@ -234,7 +244,7 @@ body {
 
 /* Responsividade */
 @media (max-width: 768px) {
-    .animal-card {
+    .animal-card, .adoption-card {
         width: calc(50% - 1rem);
     }
 
@@ -251,7 +261,7 @@ body {
 }
 
 @media (max-width: 480px) {
-    .animal-card {
+    .animal-card, .adoption-card {
         width: 100%;
     }
 }

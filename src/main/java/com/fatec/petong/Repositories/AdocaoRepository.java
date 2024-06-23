@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface AdocaoRepository extends JpaRepository<Adocao, Integer> {
     List<Adocao> findByUsuarioId(Integer usuarioId);
+    List<Adocao> findAdocaoByOng_Ongid(Integer ongId);
 }
