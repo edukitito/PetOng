@@ -33,7 +33,7 @@ public class AnimalService {
 
     public List<Animais> searchAnimals(String tipo, String cidade, String estado) {
         if (tipo == null && cidade == null && estado == null) {
-            return animalRepository.findAll();
+            return animalRepository.findAllAtivos();
         } else if (tipo != null && (cidade == null || cidade.equals("")) && (estado == null || estado.equals(""))) {
             return animalRepository.findAnimaisByTipo(tipo);
         } else if (tipo == null && cidade != null && !cidade.equals("") && (estado == null || estado.equals(""))) {
@@ -45,10 +45,9 @@ public class AnimalService {
         } else if (tipo != null && (cidade == null || cidade.equals("")) && estado != null && !estado.equals("")) {
             return animalRepository.findAnimaisByEstadoTipo(estado, tipo);
         } else {
-            return animalRepository.findAll();
+            return animalRepository.findAllAtivos();
         }
     }
-
 
 
     public Animais update(int id, Animais animais){
