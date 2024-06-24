@@ -4,6 +4,7 @@ import com.fatec.petong.Entities.Usuarios;
 import com.fatec.petong.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +23,16 @@ import java.util.Optional;
             return repository.findById(id);
         }
 
+        @Transactional
         public Usuarios create(Usuarios usuario) {
-            return repository.save(usuario);
+            try {
+                repository.cadastrarUsuario(usuario.getNome(),usuario.getEmail(),usuario.getSenha(),usuario.getTelefone(),usuario.getCpf(),usuario.getEndereco(),
+                        usuario.getCidade(),usuario.getEstado(),usuario.getNickname());
+                return repository.findUltimoUsuarioCadastrado();
+            }catch (Exception e){
+                System.err.println("Erro ao cadastrar usuário: " + e.getMessage());
+                return null;
+            }
         }
 
         public Usuarios update(int id, Usuarios usuarioDetails) {
