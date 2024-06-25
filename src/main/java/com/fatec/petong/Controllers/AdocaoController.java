@@ -25,7 +25,6 @@ public class AdocaoController {
         adocao.setDataAdocao(new Date());
         adocao.setEtapaAdocao(EtapaAdocao.INICIO);
         adocao.setStatusAdocao(StatusAdocao.PENDENTE);
-        System.out.println(adocao.getOng().getOngid());
         Adocao createdAdocao = adocaoService.saveAdocao(adocao);
         return ResponseEntity.ok(createdAdocao);
     }
