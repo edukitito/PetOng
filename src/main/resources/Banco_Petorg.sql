@@ -140,11 +140,12 @@ GO
 
 CREATE TRIGGER trg_InativarUsuario
 ON usuarios
-AFTER UPDATE
+instead of delete
 AS
 BEGIN
-    IF EXISTS (SELECT 1 FROM inserted WHERE ativo = 0)
-    BEGIN
+		UPDATE usuarios
+		SET ativo = 0
+		WHERE id IN (SELECT id FROM deleted);
         -- Inativar adoções do usuário
         UPDATE adocoes
         SET ativo = 0, status_adocao = 'CANCELADA'
@@ -154,7 +155,6 @@ BEGIN
         UPDATE animais
         SET ativo = 0
         WHERE proprietario_id IN (SELECT id FROM inserted WHERE ativo = 0) AND proprietario_tipo = 'usuario';
-    END
 END;
 GO
 
@@ -236,3 +236,5 @@ BEGIN
     SELECT ongid, 'ong' FROM inserted;
 END;
 GO
+
+select * from usuarios
