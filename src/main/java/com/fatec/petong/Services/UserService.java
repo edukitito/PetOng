@@ -64,8 +64,8 @@ import java.util.Optional;
     }
 
     public String validateUser(String email, String senha) {
-        Optional<Usuarios> user = repository.findByEmail(email);
-        if (user.isPresent() && user.get().getSenha().equals(senha)) {
+        Optional<Usuarios> user = repository.findByEmailAtivo(email);
+        if (user != null && user.isPresent() && user.get().getSenha().equals(senha)) {
             return "Aprovado";
         } else if(user.isPresent() && !user.get().getSenha().equals(senha)){
             return "Senha Incorreta";

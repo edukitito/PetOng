@@ -16,6 +16,9 @@ public interface UserRepository extends JpaRepository<Usuarios, Integer> {
     @Query(value = "SELECT * FROM usuarios WHERE id = (SELECT MAX(id) FROM usuarios)", nativeQuery = true)
     Usuarios findUltimoUsuarioCadastrado();
 
+    @Query(value = "SELECT * FROM vw_usuarios_ativos o WHERE o.email =:email", nativeQuery = true)
+    Optional<Usuarios> findByEmailAtivo(@Param("email") String email);
+
     @Procedure(procedureName = "sp_CadastrarUsuario")
     void cadastrarUsuario(
             @Param("nome") String nome,
