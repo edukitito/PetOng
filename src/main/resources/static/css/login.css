@@ -81,6 +81,7 @@ body {
     font-family: Abel, sans-serif;
     font-size: 18px;
     color: #061757;
+    padding-top: 10px;
 }
 
 button[type="submit"] {

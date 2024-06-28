@@ -48,20 +48,17 @@ document.addEventListener('DOMContentLoaded', function() {
         if (animalList) {
             animalList.style.display = 'flex';
         }
-        if (adoptionList) {
-            adoptionList.style.display = 'flex';
-        }
     }
 
     function renderAnimals() {
         mainTitle.textContent = 'Meus Animais';
         if (adoptionList) {
             adoptionList.style.display = 'none';
-            adoptionList.innerHTML = ''; // Limpa o conteúdo da lista de animais
+            adoptionList.innerHTML = ''; // Limpa o conteúdo da lista de adoções
         }
         if (animalList) {
             animalList.style.display = 'flex';
-            animalList.innerHTML = '';
+            animalList.innerHTML = ''; // Limpa o conteúdo da lista de animais
             animals.forEach(animal => {
                 const animalCard = document.createElement('div');
                 animalCard.classList.add('animal-card');
@@ -315,8 +312,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     });
 
-    fetchAnimals();
-
     function carregarDados() {
         showLoadingSpinner();
         fetch(`/ongs/cnpj/${sessionStorage.getItem('email')}`)
@@ -469,7 +464,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     adocoesBtn.addEventListener('click', function() {
-        animalList.style.display = 'none';
         fetchAdocoes();
     });
 
